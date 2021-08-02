@@ -8,22 +8,40 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.Null;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 @Component
 public class JdbcPotholeDao implements PotholeDao{
 
     private JdbcTemplate jdbcTemplate;
+    private String potholeTableFields =
+            "pothole_id, " +
+            "submitter_id, " +
+            "lat, " +
+            "lon, " +
+            "addr, " +
+            "neighborhood, " +
+            "date_created, " +
+            "date_inspected, " +
+            "date_repaired, " +
+            "current_status, " +
+            "severity, " +
+            "dimensions, " +
+            "notes ";
+
     public JdbcPotholeDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
     @Override
-   public List<Pothole> getAllPotholes(){
+    public List<Pothole> getAllPotholes(){
         List<Pothole> potholes = new ArrayList<>();
-        String sql = "select * from potholes";
+        String sql = "SELECT " +
+                potholeTableFields +
+                "FROM potholes";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while(results.next()) {
@@ -37,7 +55,9 @@ public class JdbcPotholeDao implements PotholeDao{
     @Override
     public List<Pothole> getPotholesByUserId(Long userID) {
         List<Pothole> potholes = new ArrayList<>();
-        String sql = "SELECT * FROM potholes WHERE submitter_id = ?";
+        String sql = "SELECT " +
+                potholeTableFields +
+                "FROM potholes WHERE submitter_id = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userID);
        while(results.next()) {
            Pothole pothole = mapRowToPothole(results);
@@ -48,7 +68,9 @@ public class JdbcPotholeDao implements PotholeDao{
 
     @Override
     public Pothole getPotholeById(Long potholeId) {
-        String sql = "SELECT * FROM potholes WHERE pothole_id = ?";
+        String sql = "SELECT " +
+                potholeTableFields +
+                "FROM potholes WHERE pothole_id = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, potholeId);
         if(results.next()) {
             return mapRowToPothole(results);
@@ -60,7 +82,9 @@ public class JdbcPotholeDao implements PotholeDao{
     @Override
     public List<Pothole> getPotholesByNeighborhood(String neighborhood) {
         List<Pothole> potholes = new ArrayList<>();
-        String sql = "SELECT * FROM potholes WHERE neighborhood = ?";
+        String sql = "SELECT " +
+                potholeTableFields +
+                "FROM potholes WHERE neighborhood = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, neighborhood);
         while(results.next()) {
             Pothole pothole = mapRowToPothole(results);
@@ -72,31 +96,37 @@ public class JdbcPotholeDao implements PotholeDao{
     @Override
     public List<Pothole> getPotholesByDateCreated(LocalDate dateCreated){
       List<Pothole> potholes = new ArrayList<>();
-      String sql = "SELECT * FROM potholes WHERE date_created = ?";
+      String sql = "SELECT " +
+              potholeTableFields +
+              "FROM potholes WHERE DATE_PART('day', date_created) = DATE_PART('day', ?)";
       SqlRowSet results = jdbcTemplate.queryForRowSet(sql, dateCreated);
       while(results.next()) {
           Pothole pothole = mapRowToPothole(results);
           potholes.add(pothole);
       }
       return potholes;
-  }
+    }
 
     @Override
     public List<Pothole> getPotholesByDimension(String dimension) {
         List<Pothole> potholes = new ArrayList<>();
-        String sql = "SELECT * FROM potholes WHERE dimension = ?";
+        String sql = "SELECT " +
+                potholeTableFields +
+                "FROM potholes WHERE dimensions = ?::pothole_dimensions";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, dimension);
         while(results.next()) {
             Pothole pothole = mapRowToPothole(results);
             potholes.add(pothole);
         }
         return potholes;
-
     }
+
     @Override
-   public List<Pothole> getPotholesByStatus(String currentStatus){
+    public List<Pothole> getPotholesByStatus(String currentStatus){
        List<Pothole> potholes = new ArrayList<>();
-       String sql = "SELECT * FROM potholes WHERE current_status = ?";
+       String sql = "SELECT " +
+               potholeTableFields +
+               "FROM potholes WHERE current_status = ?::pothole_status";
        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, currentStatus);
        while(results.next()) {
            Pothole pothole = mapRowToPothole(results);
@@ -104,13 +134,14 @@ public class JdbcPotholeDao implements PotholeDao{
        }
        return potholes;
 
-   }
+    }
+
     @Override
     public boolean createPothole(Pothole pothole){
         // create user
-        String sql = "INSERT INTO potholes (pothole_id, submitter_id, lat, lon, addr, neighborhood, date_created, " +
-                "date_inspected, date_repaired, current_status, severity, dimensions, notes) " +
-                "VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING pothole_id";
+        String sql = "INSERT INTO potholes (" +
+                potholeTableFields +
+                ") VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING pothole_id";
         Integer newPotholeID;
         try {
             newPotholeID = jdbcTemplate.update(sql, pothole.getSubmitterId(),
@@ -131,9 +162,6 @@ public class JdbcPotholeDao implements PotholeDao{
         return true;
     }
 
-
-
-
     private Pothole mapRowToPothole(SqlRowSet rs) {
         Pothole pothole = new Pothole();
         pothole.setPotholeId(rs.getLong("pothole_id"));
@@ -141,12 +169,26 @@ public class JdbcPotholeDao implements PotholeDao{
         pothole.setLon(rs.getString("lon"));
         pothole.setLat(rs.getString("lat"));
         pothole.setAddr(rs.getString("addr"));
-        pothole.setDateInspected(rs.getDate("date_inspected").toLocalDate());
-        pothole.setDateRepaired(rs.getDate("date_repaired").toLocalDate());
+        pothole.setNeighborhood(rs.getString("neighborhood"));
+        try {
+            pothole.setDateCreated(rs.getDate("date_created").toLocalDate());
+        } catch (NullPointerException e) {
+            pothole.setDateInspected(null);
+            // This one should never fail since the db field is NOT NULL, but putting it in a try-catch anyway.
+        }
+        try {
+            pothole.setDateInspected(rs.getDate("date_inspected").toLocalDate());
+        } catch (NullPointerException e) {
+            pothole.setDateInspected(null);
+        }
+        try {
+            pothole.setDateRepaired(rs.getDate("date_repaired").toLocalDate());
+        } catch (NullPointerException e) {
+            pothole.setDateInspected(null);
+        }
         pothole.setSeverity(rs.getString("severity"));
         pothole.setCurrentStatus(rs.getString("current_status"));
         pothole.setDimensions(rs.getString("dimensions"));
-        pothole.setDateCreated(rs.getDate("date_created").toLocalDate());
         return pothole;
     }
 
