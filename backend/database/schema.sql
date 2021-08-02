@@ -28,6 +28,7 @@ CREATE TABLE users (
 
 CREATE TYPE pothole_status AS ENUM ('uninspected', 'under inspection', 'inspected', 'under repair', 'repaired');
 CREATE TYPE pothole_dimensions AS ENUM ('0-1ft', '1-2ft', '2+ft', 'sinkhole');
+CREATE TYPE pothole_severity AS ENUM ('low', 'medium', 'high', 'extreme');
 
 CREATE TABLE potholes (
 	pothole_id int DEFAULT nextval('seq_pothole_id'::regclass) NOT NULL,
@@ -37,7 +38,10 @@ CREATE TABLE potholes (
 	addr varchar(150),
 	neighborhood varchar(150),
 	date_created timestamp NOT NULL,
+	date_inspected timestamp,
+	date_repaired timestamp,
 	current_status pothole_status,
+	severity pothole_severity,
 	dimensions pothole_dimensions,
 	notes varchar(250),
 	CONSTRAINT FK_pothole_user FOREIGN KEY (submitter_id) REFERENCES users (user_id),
