@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       platform: null,
-      apikey: "{gfjDkWIjpaACkQgvCKHvIcyEuH1rDgA41LDywM7Po4U}"
+      apikey: "gfjDkWIjpaACkQgvCKHvIcyEuH1rDgA41LDywM7Po4U"
       // You can get the API KEY from developer.here.com
     };
   },
