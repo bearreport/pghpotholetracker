@@ -7,9 +7,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface PotholeDao {
+
     List<Pothole> getAllPotholes();
 
-   List<Pothole> getPotholesByUserId(Long userID);
+    List<Pothole> getPotholesByUserId(Long userID);
 
     Pothole getPotholeById(Long pothole_id);
 
@@ -22,6 +23,5 @@ public interface PotholeDao {
     List<Pothole> getPotholesByStatus(String currentStatus);
 
     boolean createPothole(Pothole pothole);
-
 
 }
