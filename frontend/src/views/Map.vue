@@ -6,21 +6,24 @@
 
 <script>
 import HereMap from '../components/HereMap'
+
 export default {
-  name: 'app',
+  name: 'Map',
   components: {
     HereMap
     // Remove the HelloWorld.vue 
   },
   data() {
-return {
+    return {
     // we are this as prop to the HereMap component 
-  center:{ 
-    lat: 40.42387869, 
-    lng: -79.9779719
-    }
-}
-  
+    center:{ 
+      lat: 40.42387869, 
+      lng: -79.9779719
+      }
+    }  
+  },
+  methods: {
+    
   }
 }
 </script>
