@@ -1,5 +1,6 @@
 package com.techelevator.dao;
 
+import com.techelevator.PotholeNotFoundException;
 import com.techelevator.model.Pothole;
 import com.techelevator.model.User;
 import org.springframework.dao.DataAccessException;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Null;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -174,6 +176,23 @@ public class JdbcPotholeDao implements PotholeDao{
             return null;
         }
     }
+
+    @Override
+    public void update(Pothole pothole) {
+       String sqlUpdate = "UPDATE pothole SET" + potholeTableFields + "=? WHERE" + potholeTableFields + "=?";
+       jdbcTemplate.update(sqlUpdate, potholeTableFields);
+    }
+
+    @Override
+    public boolean deletePothole(int potholeId) {
+        String sql = "DELETE FROM potholes WHERE pothole_id = ?;";
+       return  jdbcTemplate.update(sql, potholeId) == 1;
+    }
+
+
+
+
+
 
     private Pothole mapRowToPothole(SqlRowSet rs) {
         Pothole pothole = new Pothole();
