@@ -67,7 +67,7 @@ export default {
       new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
 
       // add UI
-      this.ui = H.ui.UI.createDefault(this.map, maptypes, H);
+      this.ui = H.ui.UI.createDefault(this.map, maptypes);
       // End rendering the initial map
 
     },
@@ -91,9 +91,8 @@ export default {
       const H = window.H;
       let marker = new H.map.Marker({lat: position.Latitude, lng: position.Longitude});
       //add listener to every marker
-      marker.addEventListener("tap", event => {
+      marker.addEventListener("tap", () => {
         console.log(data)
-        console.log(event)
         });
         this.map.addObject(marker);
       }

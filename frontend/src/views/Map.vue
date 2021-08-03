@@ -27,8 +27,6 @@ export default {
   
   },
   mounted() {
-    let map = this.$refs.map;
-    map.dropMarker({Latitude: 40.42387869, Longitude: -79.9779719});
     potholeService.getAllPotholes().then((response) => {
         this.potholes = response.data;
     });   
