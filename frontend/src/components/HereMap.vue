@@ -34,12 +34,12 @@ export default {
     };
   },
   created() {
+        // Initialize the platform object:
     this.platform = new window.H.service.Platform({
       apikey: "de4YVe5qMpVeuGpjsJ3AlPUe-mwokn-D-zmqGbx0JVg"
     });
   },
   async mounted() {
-    // Initialize the platform object:
     this.initializeHereMap();
     this.getCoords();
   
@@ -53,7 +53,7 @@ export default {
       // Obtain the default map types from the platform object
       let maptypes = this.platform.createDefaultLayers();
 
-      // Instantiate (and display) a map object:
+      // update this.map (and display) a map object:
       this.map = new H.Map(mapContainer, maptypes.vector.normal.map, {
         zoom: 12,
         center: this.center
