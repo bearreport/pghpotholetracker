@@ -67,7 +67,7 @@ public class JdbcPotholeDao implements PotholeDao{
     }
 
     @Override
-    public Pothole getPotholeById(Long potholeId) {
+    public Pothole getPotholeById(Integer potholeId) {
         String sql = "SELECT " +
                 potholeTableFields +
                 "FROM potholes WHERE pothole_id = ?";
@@ -137,14 +137,26 @@ public class JdbcPotholeDao implements PotholeDao{
     }
 
     @Override
-    public boolean createPothole(Pothole pothole){
-        // create user
+    public Pothole createPothole(Pothole pothole){
         String sql = "INSERT INTO potholes (" +
                 potholeTableFields +
-                ") VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING pothole_id";
+                ") VALUES (DEFAULT, " +
+                "?, " +
+                "?, " +
+                "?, " +
+                "?, " +
+                "?, " +
+                "?, " +
+                "?, " +
+                "?, " +
+                "?::pothole_status, " +
+                "?::pothole_severity, " +
+                "?::pothole_dimensions, " +
+                "?) RETURNING pothole_id";
         Integer newPotholeID;
         try {
-            newPotholeID = jdbcTemplate.update(sql, pothole.getSubmitterId(),
+            newPotholeID = jdbcTemplate.queryForObject(sql, Integer.class,
+                    pothole.getSubmitterId(), // this might need to be replaced with a principle object?
                     pothole.getLat(),
                     pothole.getLon(),
                     pothole.getAddr(),
@@ -156,10 +168,10 @@ public class JdbcPotholeDao implements PotholeDao{
                     pothole.getSeverity(),
                     pothole.getDimensions(),
                     pothole.getNotes());
+            return getPotholeById(newPotholeID);
         } catch (DataAccessException e) {
-            return false;
+            return null;
         }
-        return true;
     }
 
     private Pothole mapRowToPothole(SqlRowSet rs) {
