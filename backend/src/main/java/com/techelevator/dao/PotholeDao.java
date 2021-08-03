@@ -1,8 +1,10 @@
 package com.techelevator.dao;
 
+import com.techelevator.PotholeNotFoundException;
 import com.techelevator.model.Pothole;
 import com.techelevator.model.User;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,6 +24,10 @@ public interface PotholeDao {
 
     List<Pothole> getPotholesByStatus(String currentStatus);
 
-    Pothole createPothole(Pothole pothole);
+    Pothole createPothole(Pothole pothole, String userName);
+
+    public void update(Pothole pothole) throws PotholeNotFoundException;
+
+    boolean deletePothole(int pothole_id) throws PotholeNotFoundException;
 
 }

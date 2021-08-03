@@ -1,5 +1,6 @@
 package com.techelevator.dao;
 
+import com.techelevator.PotholeNotFoundException;
 import com.techelevator.model.Pothole;
 import com.techelevator.model.User;
 import org.springframework.dao.DataAccessException;
@@ -9,8 +10,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.Null;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -137,35 +140,35 @@ public class JdbcPotholeDao implements PotholeDao{
     }
 
     @Override
-    public Pothole createPothole(Pothole pothole){
+    public Pothole createPothole(Pothole pothole, String userName){
         String sql = "INSERT INTO potholes (" +
                 potholeTableFields +
-                ") VALUES (DEFAULT, " +
-                "?, " +
-                "?, " +
-                "?, " +
-                "?, " +
-                "?, " +
-                "?, " +
-                "?, " +
-                "?, " +
-                "?::pothole_status, " +
-                "?::pothole_severity, " +
-                "?::pothole_dimensions, " +
+                ") VALUES (DEFAULT, " + // pothole_id
+                "(SELECT user_id FROM users WHERE username = ?), " + // submitter_id
+                "?, " + // lat
+                "?, " + // lon
+                "?, " + // addr
+                "?, " + // neighborhood
+                "CURRENT_TIMESTAMP, " + // date_created
+                "NULL, " + // date_inspected
+                "NULL, " + // date_repaired
+                "'uninspected'::pothole_status, " + // current_status
+                "NULL, " + // severity (needs ::pothole_severity to be cast correctly)
+                "?::pothole_dimensions, " + // dimensions
                 "?) RETURNING pothole_id";
         Integer newPotholeID;
         try {
             newPotholeID = jdbcTemplate.queryForObject(sql, Integer.class,
-                    pothole.getSubmitterId(), // this might need to be replaced with a principle object?
+                    userName,
                     pothole.getLat(),
                     pothole.getLon(),
                     pothole.getAddr(),
                     pothole.getNeighborhood(),
-                    pothole.getDateCreated(),
-                    pothole.getDateInspected(),
-                    pothole.getDateRepaired(),
-                    pothole.getCurrentStatus(),
-                    pothole.getSeverity(),
+//                    pothole.getDateCreated(),
+//                    pothole.getDateInspected(),
+//                    pothole.getDateRepaired(),
+//                    pothole.getCurrentStatus(),
+//                    pothole.getSeverity(),
                     pothole.getDimensions(),
                     pothole.getNotes());
             return getPotholeById(newPotholeID);
@@ -173,6 +176,23 @@ public class JdbcPotholeDao implements PotholeDao{
             return null;
         }
     }
+
+    @Override
+    public void update(Pothole pothole) {
+       String sqlUpdate = "UPDATE pothole SET" + potholeTableFields + "=? WHERE" + potholeTableFields + "=?";
+       jdbcTemplate.update(sqlUpdate, potholeTableFields);
+    }
+
+    @Override
+    public boolean deletePothole(int potholeId) {
+        String sql = "DELETE FROM potholes WHERE pothole_id = ?;";
+       return  jdbcTemplate.update(sql, potholeId) == 1;
+    }
+
+
+
+
+
 
     private Pothole mapRowToPothole(SqlRowSet rs) {
         Pothole pothole = new Pothole();
