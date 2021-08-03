@@ -31,7 +31,7 @@ public class PotholeController {
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public Pothole getPotholeById(@PathVariable long id) {
+    public Pothole getPotholeById(@PathVariable int id) {
         return potholeDao.getPotholeById(id);
     }
 
@@ -57,7 +57,7 @@ public class PotholeController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public boolean createPothole(@Valid @RequestBody Pothole createdPothole) {
+    public Pothole createPothole(@RequestBody Pothole createdPothole) {
         return potholeDao.createPothole(createdPothole);
     }
 
