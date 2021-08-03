@@ -1,7 +1,10 @@
 <template>
   <div id="login" class="text-center">
     <form class="form-signin" @submit.prevent="login">
-      <h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
+     <div class="grid-container">
+    <div class="grid-itemA"> <h1>Pothole Tracker</h1> </div>
+    <div class="grid-itemB"><h3>We got what you need so you can speed!</h3></div>
+     </div>
       <div
         class="alert alert-danger"
         role="alert"
@@ -34,7 +37,11 @@
       <router-link :to="{ name: 'register' }">Need an account?</router-link>
       <button type="submit">Sign in</button>
     </form>
+    
+    
+    
   </div>
+  
 </template>
 
 <script>
@@ -74,3 +81,13 @@ export default {
   }
 };
 </script>
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap');
+
+.div {
+  font-family: Gowun Batang, Arial, sans-serif;
+}
+template {
+  background-color: #e6e6e6;
+}
+</style>
