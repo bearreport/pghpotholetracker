@@ -12,7 +12,7 @@ public interface PotholeDao {
 
     List<Pothole> getPotholesByUserId(Long userID);
 
-    Pothole getPotholeById(Long pothole_id);
+    Pothole getPotholeById(Integer pothole_id);
 
     List<Pothole> getPotholesByNeighborhood(String neighborhood);
 
@@ -22,6 +22,6 @@ public interface PotholeDao {
 
     List<Pothole> getPotholesByStatus(String currentStatus);
 
-    boolean createPothole(Pothole pothole);
+    Pothole createPothole(Pothole pothole);
 
 }

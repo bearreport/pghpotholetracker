@@ -5,6 +5,7 @@ import com.techelevator.model.Pothole;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class PotholeController {
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public Pothole getPotholeById(@PathVariable long id) {
+    public Pothole getPotholeById(@PathVariable int id) {
         return potholeDao.getPotholeById(id);
     }
 
@@ -53,5 +54,13 @@ public class PotholeController {
     public List<Pothole> getPotholesByStatus(@PathVariable String status) {
         return potholeDao.getPotholesByStatus(status);
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(path = "", method = RequestMethod.POST)
+    public Pothole createPothole(@RequestBody Pothole createdPothole) {
+        return potholeDao.createPothole(createdPothole);
+    }
+
+
 
 }
