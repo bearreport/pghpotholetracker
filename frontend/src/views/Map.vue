@@ -27,8 +27,6 @@ export default {
   
   },
   mounted() {
-    let map = this.$refs.map;
-    map.dropMarker({Latitude: 40.42387869, Longitude: -79.9779719});
     potholeService.getAllPotholes().then((response) => {
         this.potholes = response.data;
     });   
@@ -40,7 +38,13 @@ export default {
       for (let i = 0; i < this.potholes.length; i++) {
         let lat = this.potholes[i].lat;
         let lon = this.potholes[i].lon;
-        map.dropMarker({Latitude: lat, Longitude: lon});
+        let data = {};
+        data.potholeId = this.potholes[i].potholeId;
+        data.neighborhood = this.potholes[i].neighborhood
+        data.status = this.potholes[i].currentStatus;
+        data.dateCreated = this.potholes[i].dateCreated;
+        data.severity = this.potholes[i].severity;
+        map.dropMarker({Latitude: lat, Longitude: lon}, data);
       }
 
     }
