@@ -1,11 +1,12 @@
 <template>
   <div>
-      <HereMap :center="center" />
+      <HereMap ref="map" :center="center" />
   </div>  
 </template>
 
 <script>
 import HereMap from '../components/HereMap'
+
 export default {
   name: 'app',
   components: {
@@ -13,7 +14,7 @@ export default {
     // Remove the HelloWorld.vue 
   },
   data() {
-return {
+  return {
     // we are this as prop to the HereMap component 
   center:{ 
     lat: 40.42387869, 
@@ -21,6 +22,11 @@ return {
     }
 }
   
+  },
+  mounted() {
+    let map = this.$refs.map;
+    map.dropMarker({Latitude: 40.42387869, Longitude: -79.9779719});
+    
   }
 }
 </script>
