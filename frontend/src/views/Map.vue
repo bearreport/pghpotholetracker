@@ -1,11 +1,14 @@
 <template>
   <div>
-      <HereMap :center="center" />
+      <HereMap ref="map" :center="center" />
+      <button @click.prevent="mapPotholeArray">map all potholes </button>
   </div>  
 </template>
 
 <script>
 import HereMap from '../components/HereMap'
+import potholeService from '../services/PotholeService'
+
 export default {
   name: 'app',
   components: {
@@ -13,14 +16,35 @@ export default {
     // Remove the HelloWorld.vue 
   },
   data() {
-return {
+  return {
     // we are this as prop to the HereMap component 
   center:{ 
     lat: 40.42387869, 
     lng: -79.9779719
-    }
+    },
+    potholes: []
 }
   
+  },
+  mounted() {
+    let map = this.$refs.map;
+    map.dropMarker({Latitude: 40.42387869, Longitude: -79.9779719});
+    potholeService.getAllPotholes().then((response) => {
+        this.potholes = response.data;
+    });   
+  },
+  methods: {
+    mapPotholeArray() {
+      let map = this.$refs.map;
+
+      for (let i = 0; i < this.potholes.length; i++) {
+        let lat = this.potholes[i].lat;
+        let lon = this.potholes[i].lon;
+        map.dropMarker({Latitude: lat, Longitude: lon});
+      }
+
+    }
+
   }
 }
 </script>
