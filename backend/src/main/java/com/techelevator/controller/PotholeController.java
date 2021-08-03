@@ -1,5 +1,7 @@
 package com.techelevator.controller;
 
+import com.techelevator.PotholeNotFoundException;
+import com.techelevator.dao.JdbcPotholeDao;
 import com.techelevator.dao.PotholeDao;
 import com.techelevator.model.Pothole;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -62,6 +64,14 @@ public class PotholeController {
         return potholeDao.createPothole(createdPothole, principal.getName());
     }
 
-
-
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+    public boolean deletePothole(@PathVariable int id) throws PotholeNotFoundException {
+        return potholeDao.deletePothole(id);
+    }
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
+    public Pothole updatePothole(@RequestBody Pothole pothole, @PathVariable int id){
+        return null;
+    }
 }
