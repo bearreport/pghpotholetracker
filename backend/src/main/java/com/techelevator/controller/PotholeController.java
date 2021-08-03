@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -57,8 +58,8 @@ public class PotholeController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public Pothole createPothole(@RequestBody Pothole createdPothole) {
-        return potholeDao.createPothole(createdPothole);
+    public Pothole createPothole(@RequestBody Pothole createdPothole, Principal principal) {
+        return potholeDao.createPothole(createdPothole, principal.getName());
     }
 
 
