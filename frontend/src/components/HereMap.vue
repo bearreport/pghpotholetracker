@@ -24,6 +24,7 @@ export default {
       platform: {},
       map: {},
       markers: [],
+      ui: {},
       lat: 0,
       long: 0,
       reverseGeocodeResponse: {},
@@ -66,7 +67,7 @@ export default {
       new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
 
       // add UI
-      H.ui.UI.createDefault(this.map, maptypes, H);
+      this.ui = H.ui.UI.createDefault(this.map, maptypes, H);
       // End rendering the initial map
 
     },
@@ -86,11 +87,18 @@ export default {
       this.address = fullAddress.substring(0, fullAddress.length - 5);
       }))
   },
-    dropMarker(position) {
+    dropMarker(position, data) {
       const H = window.H;
-      let marker = new H.map.Marker({lat: position.Latitude, lng: position.Longitude})
-      this.map.addObject(marker);
-    }
+      let marker = new H.map.Marker({lat: position.Latitude, lng: position.Longitude});
+      //add listener to every marker
+      marker.addEventListener("tap", event => {
+        console.log(data)
+        console.log(event)
+        });
+        this.map.addObject(marker);
+      }
+      ,
+
    
 }};
 </script>
