@@ -26,7 +26,7 @@ public interface PotholeDao {
 
     Pothole createPothole(Pothole pothole, String userName);
 
-    public void update(Pothole pothole) throws PotholeNotFoundException;
+    Pothole update(Pothole pothole, int id) throws PotholeNotFoundException;
 
     boolean deletePothole(int pothole_id) throws PotholeNotFoundException;
 
