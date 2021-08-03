@@ -71,7 +71,7 @@ public class PotholeController {
     }
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-    public Pothole updatePothole(@RequestBody Pothole pothole, @PathVariable int id){
-        return null;
+    public Pothole updatePothole(@RequestBody Pothole pothole, @PathVariable int id) throws PotholeNotFoundException{
+        return potholeDao.update(pothole, id);
     }
 }

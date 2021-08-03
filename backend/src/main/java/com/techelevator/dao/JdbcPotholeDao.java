@@ -178,10 +178,26 @@ public class JdbcPotholeDao implements PotholeDao{
     }
 
     @Override
-    public void update(Pothole pothole) {
-       String sqlUpdate = "UPDATE pothole SET" + potholeTableFields + "=? WHERE" + potholeTableFields + "=?";
-       jdbcTemplate.update(sqlUpdate, potholeTableFields);
+    public Pothole update(Pothole pothole, int id) {
+       String sqlUpdate = "UPDATE potholes SET " +
+                "lat = ?, " +
+                "lon = ?, " +
+                "addr = ?, " +
+                "neighborhood = ?, " +
+                "date_created = ?, " +
+                "date_inspected = ?, " +
+                "date_repaired = ?, " +
+                "current_status = ?::pothole_status, " +
+                "severity = ?::pothole_severity, " +
+                "dimensions = ?::pothole_dimensions, " +
+                "notes = ? " + "WHERE pothole_id = ?;";
+       jdbcTemplate.update(sqlUpdate, pothole.getLat(), pothole.getLon(), pothole.getAddr(), pothole.getNeighborhood(), pothole.getDateCreated(),
+               pothole.getDateInspected(), pothole.getDateRepaired(), pothole.getCurrentStatus(), pothole.getSeverity(), pothole.getDimensions(),
+               pothole.getNotes(), id);
+
+       return getPotholeById(id);
     }
+
 
     @Override
     public boolean deletePothole(int potholeId) {
