@@ -8,7 +8,11 @@
 </template>
 
 <script>
+import neighborhoodService from "../services/NeighborhoodService";
+
 export default {
+
+
   name: "HereMap",
   props: {
     center: Object
@@ -55,9 +59,24 @@ export default {
       H.ui.UI.createDefault(map, maptypes, H);
       // End rendering the initial map
 
-    }
+    },
+    getCoords() {
+      //collect coordinates
+      navigator.geolocation.getCurrentPosition((loc) => {
+        this.lat = loc.coords.latitude;
+        this.long = loc.coords.longitude;
+      })  
+    },
+    reverseGeocode() {
+      neighborhoodService.reverseGeocode(this.lat, this.long)
+      .then((response => {
+      this.reverseGeocodeResponse = response.data;
+      this.neighborhoodName = response.data.results[0].address_components[2].long_name;
+      const fullAddress = response.data.results[0].formatted_address;
+      this.address = fullAddress.substring(0, fullAddress.length - 5);
+      }))
   }
-};
+}};
 </script>
 
 <style scoped>
