@@ -6,6 +6,7 @@ import com.techelevator.model.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -244,10 +245,33 @@ public class JdbcPotholeDao implements PotholeDao{
     }
 
     @Override
-    public boolean deletePothole(int potholeId) {
-        String sql = "DELETE FROM potholes WHERE pothole_id = ?;";
-       return  jdbcTemplate.update(sql, potholeId) == 1;
+    public boolean deletePothole(int potholeId, String userName) {
+        String userNameSql = "SELECT user_id FROM users WHERE username = ?";
+        SqlRowSet userResults = jdbcTemplate.queryForRowSet(userNameSql, userName);
+        int userId = -1;
+        if(userResults.next()){
+            userId = userResults.getInt("user_id");
+        }
+
+        String submitterSql = "SELECT submitter_id FROM potholes WHERE pothole_id = ?";
+        SqlRowSet submitterResults = jdbcTemplate.queryForRowSet(submitterSql, potholeId);
+        int submitterId = -1;
+        if(submitterResults.next()){
+            submitterId = submitterResults.getInt("submitter_id");
+
+        }
+
+        if (userId == -1 || submitterId == -1 || userId != submitterId){
+            return false;
+        } else {
+
+            String sql = "DELETE FROM potholes WHERE pothole_id = ?;";
+            return jdbcTemplate.update(sql, potholeId) == 1;
+        }
     }
+
+
+
 
     private Pothole mapRowToPothole(SqlRowSet rs) {
         Pothole pothole = new Pothole();

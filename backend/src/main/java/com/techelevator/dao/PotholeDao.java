@@ -32,6 +32,6 @@ public interface PotholeDao {
 
     Pothole updateFull(Pothole pothole, int id) throws PotholeNotFoundException;
 
-    boolean deletePothole(int pothole_id) throws PotholeNotFoundException;
+    boolean deletePothole(int pothole_id, String userName) throws PotholeNotFoundException;
 
 }
