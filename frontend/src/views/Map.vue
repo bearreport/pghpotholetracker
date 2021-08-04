@@ -1,18 +1,26 @@
 <template>
   <div>
+    <div v-if="globalview">
       <HereMap ref="map" :center="center" />
       <button @click.prevent="mapPotholeArray">map all potholes </button>
+    </div>
+    <div v-if="specificview">
+      <PotholeMap ref="potholeMap" :center="center" />
+    </div>  
   </div>  
 </template>
 
 <script>
 import HereMap from '../components/HereMap'
+import PotholeMap from '../components/PotholeMap'
 import potholeService from '../services/PotholeService'
+
 
 export default {
   name: 'Map',
   components: {
-    HereMap
+    HereMap,
+    PotholeMap
     // Remove the HelloWorld.vue 
   },
   data() {
@@ -22,7 +30,9 @@ export default {
     lat: 40.42387869, 
     lng: -79.9779719
     },
-    potholes: []
+    potholes: [],
+    globalview: true,
+    specificview: false
 }
   
   },
@@ -38,16 +48,23 @@ export default {
       for (let i = 0; i < this.potholes.length; i++) {
         let lat = this.potholes[i].lat;
         let lon = this.potholes[i].lon;
-        let data = {};
-        data.potholeId = this.potholes[i].potholeId;
-        data.neighborhood = this.potholes[i].neighborhood
-        data.status = this.potholes[i].currentStatus;
-        data.dateCreated = this.potholes[i].dateCreated;
-        data.severity = this.potholes[i].severity;
+        let data = this.potholes[i];
         map.dropMarker({Latitude: lat, Longitude: lon}, data);
       }
 
-    }
+    },
+
+    dropMarker(position, data) {
+      const H = window.H;
+      let marker = new H.map.Marker({lat: position.Latitude, lng: position.Longitude});
+      //add listener to every marker
+      marker.addEventListener("tap", () => {
+        console.log(data);
+        this.globalView = false;
+        this.specificView = true;
+        });
+        this.map.addObject(marker);
+      }
 
   }
 }

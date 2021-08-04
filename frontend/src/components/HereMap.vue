@@ -99,13 +99,12 @@ export default {
       let marker = new H.map.Marker({lat: position.Latitude, lng: position.Longitude});
       //add listener to every marker
       marker.addEventListener("tap", () => {
-        console.log(data)
+        console.log(data);
+        this.globalView = false;
+        this.specificView = true;
         });
         this.map.addObject(marker);
       }
-      ,
-
-   
 }};
 </script>
 
