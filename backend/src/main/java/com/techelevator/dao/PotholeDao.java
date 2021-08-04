@@ -24,9 +24,13 @@ public interface PotholeDao {
 
     List<Pothole> getPotholesByStatus(String currentStatus);
 
+    List<Pothole> getPotholesBySeverity(String severity);
+
     Pothole createPothole(Pothole pothole, String userName);
 
-    Pothole update(Pothole pothole, int id) throws PotholeNotFoundException;
+    Pothole updateBasic(Pothole pothole, int id) throws PotholeNotFoundException;
+
+    Pothole updateFull(Pothole pothole, int id) throws PotholeNotFoundException;
 
     boolean deletePothole(int pothole_id, String userName) throws PotholeNotFoundException;
 

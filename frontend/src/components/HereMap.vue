@@ -29,8 +29,7 @@ export default {
       long: 0,
       reverseGeocodeResponse: {},
       address: "",
-      neighborhoodName: ""
-
+      neighborhoodName: "",
       // You can get the API KEY from developer.here.com
     };
   },
@@ -93,10 +92,11 @@ export default {
       //add listener to every marker
       marker.addEventListener("tap", () => {
         console.log(data)
+        this.$store.state.currentMarker = data;
         });
-        this.map.addObject(marker);
-      }
-      ,
+    this.map.addObject(marker);
+  }
+    ,
 
    
 }};

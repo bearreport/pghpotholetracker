@@ -50,6 +50,7 @@ CREATE TABLE potholes (
 
 INSERT INTO users (username,password_hash,role) VALUES ('user','$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_USER');
 INSERT INTO users (username,password_hash,role) VALUES ('admin','$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_ADMIN');
+INSERT INTO users (username,password_hash,role) VALUES ('employee','$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_EMPLOYEE');
 
 INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.4238', '-79.9779', '123 Blah St.', 'Wilkinsburg', CURRENT_TIMESTAMP, NULL, NULL, 'uninspected', 'medium', '0-1ft', 'no notes');
 INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.424140', '-79.980714', '188 Fake St.', 'Squirrel Hill', CURRENT_TIMESTAMP, NULL, NULL, 'uninspected', 'medium', '1-2ft', 'no notes');
