@@ -66,8 +66,8 @@ public class PotholeController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-    public boolean deletePothole(@PathVariable int id) throws PotholeNotFoundException {
-        return potholeDao.deletePothole(id);
+    public boolean deletePothole(@PathVariable int id, Principal principal) throws PotholeNotFoundException {
+        return potholeDao.deletePothole(id, principal.getName());
     }
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
