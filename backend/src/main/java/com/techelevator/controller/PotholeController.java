@@ -58,6 +58,11 @@ public class PotholeController {
         return potholeDao.getPotholesByStatus(status);
     }
 
+    @RequestMapping(path = "/severity/{severity}", method = RequestMethod.GET)
+    public List<Pothole> getPotholesBySeverity(@PathVariable String severity) {
+        return potholeDao.getPotholesBySeverity(severity);
+    }
+
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(path = "", method = RequestMethod.POST)
     public Pothole createPothole(@RequestBody Pothole createdPothole, Principal principal) {
@@ -65,13 +70,22 @@ public class PotholeController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
+    public Pothole updatePotholeBasic(@RequestBody Pothole pothole, @PathVariable int id) throws PotholeNotFoundException{
+        return potholeDao.updateBasic(pothole, id);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    @RequestMapping(path = "/employee/{id}", method = RequestMethod.PUT)
+    public Pothole updatePotholeFull(@RequestBody Pothole pothole, @PathVariable int id) throws PotholeNotFoundException{
+        return potholeDao.updateFull(pothole, id);
+    }
+
+    // CHANGE DELETE TO ONLY WORK FOR A SINGLE USER'S POTHOLES, OR ALL IF AN EMPLOYEE
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
     public boolean deletePothole(@PathVariable int id) throws PotholeNotFoundException {
         return potholeDao.deletePothole(id);
     }
-    @PreAuthorize("isAuthenticated()")
-    @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-    public Pothole updatePothole(@RequestBody Pothole pothole, @PathVariable int id) throws PotholeNotFoundException{
-        return potholeDao.update(pothole, id);
-    }
+
 }

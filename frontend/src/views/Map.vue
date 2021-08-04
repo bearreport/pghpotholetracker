@@ -1,19 +1,26 @@
 <template>
-  <div>
-      <HereMap ref="map" :center="center" />
-      <button @click.prevent="mapPotholeArray">map all potholes </button>
+<div>
+  <div class='container'>
+    <map-sidebar />
+    <div class='map-content'>
+      <HereMap id="map" ref="map" :center="center" />
+    </div>
   </div>  
+  <!-- <button @click.prevent="mapPotholeArray">map all potholes </button>  -->
+        <!--  Commented this out because I just added the method to the mounted lifecycle hook--> 
+</div>
 </template>
 
 <script>
 import HereMap from '../components/HereMap'
 import potholeService from '../services/PotholeService'
+import MapSidebar from '@/components/MapSidebar.vue'
 
 export default {
   name: 'app',
   components: {
-    HereMap
-    // Remove the HelloWorld.vue 
+    HereMap,
+    MapSidebar
   },
   data() {
   return {
@@ -29,6 +36,7 @@ export default {
   mounted() {
     potholeService.getAllPotholes().then((response) => {
         this.potholes = response.data;
+        this.mapPotholeArray();
     });   
   },
   methods: {
@@ -40,10 +48,18 @@ export default {
         let lon = this.potholes[i].lon;
         let data = {};
         data.potholeId = this.potholes[i].potholeId;
-        data.neighborhood = this.potholes[i].neighborhood
-        data.status = this.potholes[i].currentStatus;
+        data.submitterId = this.potholes[i].submitterId;
+        data.lat = this.potholes[i].lat;
+        data.lon = this.potholes[i].lon;
+        data.addr = this.potholes[i].addr;
+        data.neighborhood = this.potholes[i].neighborhood;
         data.dateCreated = this.potholes[i].dateCreated;
+        data.dateInspected = this.potholes[i].dateInspected;
+        data.dateRepaired = this.potholes[i].dateRepaired;
+        data.status = this.potholes[i].currentStatus;
         data.severity = this.potholes[i].severity;
+        data.dimensions = this.potholes[i].dimensions;
+        data.notes = this.potholes[i].notes;
         map.dropMarker({Latitude: lat, Longitude: lon}, data);
       }
 
@@ -54,12 +70,32 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200&display=swap');
+
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: bold;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+#map {
+  margin: 30px;
+  padding: 0;
+  border-radius: 0 0 15px 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 0 30px 0;
+}
+
+.map-content {
+  flex-grow: 3;
 }
 </style>
