@@ -93,9 +93,12 @@ export default {
   display: flex;
   justify-content: space-between;
   padding: 30px 0 30px 0;
+  background-image: url("https://images.unsplash.com/photo-1593436878321-2cadf6021994?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1349&q=80");
+  background-size: cover;
 }
 
 .map-content {
   flex-grow: 3;
 }
+
 </style>
