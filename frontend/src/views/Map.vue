@@ -26,4 +26,5 @@ export default {
 .map-content {
   flex-grow: 3;
 }
+
 </style>
