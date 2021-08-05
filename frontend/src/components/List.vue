@@ -4,6 +4,7 @@
     <table id="tblPotholes">
       <thead>
         <tr>
+            <th>*</th>
             <th>Pothole ID</th>
             <th>Submitter ID</th>
             <th>Latitude</th>
@@ -17,10 +18,20 @@
             <th>Severity</th>
             <th>Dimensions</th>
             <th>Notes</th>
+            <th>Edit?</th>
           </tr>
       </thead>
       <tbody>
-          <tr v-for="pothole in potholes" v-bind:key="pothole.potholeId">
+          <tr v-for="pothole in filteredList" v-bind:key="pothole.potholeId">
+            <td>
+              <input
+                type="checkbox"
+                v-bind:id="pothole.potholeId"
+                v-bind:value="pothole.potholeId"
+                v-on:change="selectPothole($event)"
+                v-bind:checked="selectedPotholeIDs.includes(pothole.potholeId)"
+              />
+            </td>
             <td>{{ pothole.potholeId }}</td>
             <td>{{ pothole.submitterId }}</td>
             <td>{{ pothole.lat }}</td>
@@ -34,10 +45,12 @@
             <td>{{ pothole.severity }}</td>
             <td>{{ pothole.dimensions }}</td>
             <td><textarea class="notes-cell" v-model="pothole.notes"></textarea></td>
+            <td><button >Edit</button></td>
           </tr>
       </tbody>
       </table>
     </div>
+    <button v-on:click="deleteSelectedPotholes()">Delete Selected Potholes</button>
   </div>
 </template>
 
@@ -49,15 +62,78 @@ export default {
     components: {
       
     },
-    data() {
-      return {
-        potholes: []
+    computed: {
+      filteredList() {
+        let filteredPotholes = this.$store.state.allPotholes;
+        return filteredPotholes;
       }
     },
-    mounted() {
+    data() {
+      return {
+        selectedPotholeIDs: [],
+        errorMsg: "",
+        potholeTableKey: 0
+      }
+    },
+    created() {
       potholeService.getAllPotholes().then((response) => {
-          this.potholes = response.data;
-      });   
+          this.$store.state.allPotholes = response.data;
+      });
+    },
+    methods: {
+      forceGetAllPotholes() {
+        potholeService.getAllPotholes().then((response) => {
+        this.$store.state.allPotholes = response.data;
+        });
+      },
+      selectPothole(event) {
+        if (event.target.checked) {
+          this.selectedPotholeIDs.push(parseInt(event.target.id));
+        } else {
+          this.selectedPotholeIDs = this.selectedPotholeIDs.filter((pothole) => {
+            return pothole !== parseInt(event.target.id);
+          });
+        }
+      },
+      deletePothole(potholeId){
+        potholeService
+          .deletePotholeByIdFull(potholeId)
+          .then(response => {
+            if (response.status !== 200) {
+              alert("Error deleting potholes... " + this.errorMsg)
+            }
+          })
+          .catch(error => {
+            if (error.response) {
+              this.errorMsg =
+                "Error deleting pothole. Response received was '" + 
+                error.response.statusText + "'.";
+            } else if (error.request) {
+              this.errorMsg =
+                "Error deleting pothole. Server could not be reached.";
+            } else {
+              this.errorMsg =
+                "Error deleting pothole. Request could not be created.";
+            }
+          })
+      },
+      deleteSelectedPotholes(){
+        if (confirm("You are about to delete the following potholes: " + this.selectedPotholeIDs + " Are you sure?")) {
+          this.selectedPotholeIDs.forEach((potholeId) => {
+            this.deletePothole(potholeId);
+            this.filteredList = this.filteredList.filter((pothole) => {
+              return pothole.potholeId !== potholeId;
+             })
+          });
+          this.selectedPotholeIDs = [];
+          this.$router.go();
+        }
+      } 
+      // updatePothole() {
+      //   const potholeToUpdate = {
+          
+      //   }
+      // }
     }
 }
 </script>
