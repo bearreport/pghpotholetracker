@@ -68,8 +68,8 @@ export default {
 
 <style>
 #map {
+  height: 690px;
   padding: 0;
-  border-radius: 0 0 15px 15px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 

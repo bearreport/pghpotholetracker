@@ -245,7 +245,7 @@ public class JdbcPotholeDao implements PotholeDao{
     }
 
     @Override
-    public boolean deletePothole(int potholeId, String userName) {
+    public boolean deletePotholeBasic(int potholeId, String userName) {
         String userNameSql = "SELECT user_id FROM users WHERE username = ?";
         SqlRowSet userResults = jdbcTemplate.queryForRowSet(userNameSql, userName);
         int userId = -1;
@@ -270,6 +270,11 @@ public class JdbcPotholeDao implements PotholeDao{
         }
     }
 
+    @Override
+    public boolean deletePotholeFull(int potholeId) {
+        String sql = "DELETE FROM potholes WHERE pothole_id = ?;";
+        return jdbcTemplate.update(sql, potholeId) == 1;
+    }
 
 
 

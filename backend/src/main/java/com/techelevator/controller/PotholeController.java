@@ -12,9 +12,9 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/potholes")
-@CrossOrigin
 public class PotholeController {
 
     private PotholeDao potholeDao;
@@ -81,11 +81,16 @@ public class PotholeController {
         return potholeDao.updateFull(pothole, id);
     }
 
-    // CHANGE DELETE TO ONLY WORK FOR A SINGLE USER'S POTHOLES, OR ALL IF AN EMPLOYEE
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-    public boolean deletePothole(@PathVariable int id, Principal principal) throws PotholeNotFoundException {
-        return potholeDao.deletePothole(id, principal.getName());
+    public boolean deletePotholeBasic(@PathVariable int id, Principal principal) throws PotholeNotFoundException {
+        return potholeDao.deletePotholeBasic(id, principal.getName());
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+    @RequestMapping(path = "/employee/{id}", method = RequestMethod.DELETE)
+    public boolean deletePotholeFull(@PathVariable int id) throws PotholeNotFoundException {
+        return potholeDao.deletePotholeFull(id);
     }
 
 }

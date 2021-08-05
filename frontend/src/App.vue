@@ -7,8 +7,8 @@
       <span class="pipe">   |   </span>
       <router-link v-bind:to="{ name: 'map' }">Map</router-link>
       <span class="pipe" v-if="$store.state.token != ''">   |   </span>
-      <router-link v-bind:to="{ name: 'list' }" v-if="$store.state.token != '' && this.$store.state.user.authorities[0].name == 'ROLE_EMPLOYEE'">List View</router-link>
-      <span class="pipe" v-if="$store.state.token != '' && this.$store.state.user.authorities[0].name == 'ROLE_EMPLOYEE'">   |  </span>
+      <router-link v-bind:to="{ name: 'list' }" v-if="checkRole">List View</router-link>
+      <span class="pipe" v-if="checkRole" >   |  </span>
       <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
       </div>
       <span v-if="$store.state.token == ''">You are not currently logged in.</span>
@@ -20,7 +20,15 @@
 
 <script>
 export default {
-
+  computed: {
+    checkRole() {
+      if (this.$store.state.token != '' && (this.$store.state.user.authorities[0].name == 'ROLE_EMPLOYEE' || this.$store.state.user.authorities[0].name == 'ROLE_ADMIN')) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
 }
 </script>
 
