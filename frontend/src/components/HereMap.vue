@@ -3,7 +3,7 @@
 <template>
   <div id="map">
   <!--In the following div the HERE Map will render-->
-    <div id="mapContainer" style="height:600px;width:100%" ref="hereMap"></div>
+    <div id="mapContainer" style="height:690px;width:100%" ref="hereMap"></div>
     <button @click.prevent="getCoords">get coords</button>
     <button @click.prevent="reverseGeocode">reverseGeocode</button>
     <div>lat: {{this.lat}}, long: {{this.long}} </div>
@@ -104,10 +104,11 @@ export default {
 
 <style scoped>
 #map {
-  width: 60vw;
+  /* width: 60vw; */
+  flex-grow: 3;
   min-width: 360px;
   text-align: center;
-  margin: 5% auto;
+  margin: 0 20px;
   background-color: #ccc;
 }
 </style>

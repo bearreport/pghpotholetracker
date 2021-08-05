@@ -42,14 +42,15 @@ export default {
 .pothole-info {
   text-align: start;
   font-size: 20px;
+  font-family: sans-serif;
 }
 .notes-field {
   width: 87%;
-  height: 200px;
+  height: 250px;
   resize: none;
-}
-li {
-  font-weight: bolder;
+  margin: 20px 0 0 0;
+  font-family: sans-serif;
+  font-size: 20px;
 }
 .info-text {
   font-weight: normal;
