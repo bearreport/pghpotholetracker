@@ -3,7 +3,7 @@
 <template>
   <div id="map">
   <!--In the following div the HERE Map will render-->
-    <div id="mapContainer" style="height:600px;width:100%" ref="hereMap"></div>
+    <div id="mapContainer" style="height:690px;width:100%" ref="hereMap"></div>
     <button @click.prevent="getCoords">get coords</button>
     <button @click.prevent="reverseGeocode">reverseGeocode</button>
     <div>lat: {{this.lat}}, long: {{this.long}} </div>
@@ -31,8 +31,7 @@ export default {
       long: 0,
       reverseGeocodeResponse: {},
       address: "",
-      neighborhoodName: ""
-
+      neighborhoodName: "",
       // You can get the API KEY from developer.here.com
     };
   },
@@ -99,21 +98,24 @@ export default {
       let marker = new H.map.Marker({lat: position.Latitude, lng: position.Longitude});
       //add listener to every marker
       marker.addEventListener("tap", () => {
-        console.log(data);
-        this.globalView = false;
-        this.specificView = true;
+        console.log(data)
+        this.$store.state.currentMarker = data;
         });
-        this.map.addObject(marker);
-      }
+    this.map.addObject(marker);
+  }
+    ,
+
+   
 }};
 </script>
 
 <style scoped>
 #map {
-  width: 60vw;
+  /* width: 60vw; */
+  flex-grow: 3;
   min-width: 360px;
   text-align: center;
-  margin: 5% auto;
+  margin: 0 20px;
   background-color: #ccc;
 }
 </style>

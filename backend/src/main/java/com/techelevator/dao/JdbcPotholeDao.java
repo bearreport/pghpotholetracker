@@ -6,6 +6,7 @@ import com.techelevator.model.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -136,7 +137,20 @@ public class JdbcPotholeDao implements PotholeDao{
            potholes.add(pothole);
        }
        return potholes;
+    }
 
+    @Override
+    public List<Pothole> getPotholesBySeverity(String severity){
+        List<Pothole> potholes = new ArrayList<>();
+        String sql = "SELECT " +
+                potholeTableFields +
+                "FROM potholes WHERE severity = ?::pothole_severity";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, severity);
+        while(results.next()) {
+            Pothole pothole = mapRowToPothole(results);
+            potholes.add(pothole);
+        }
+        return potholes;
     }
 
     @Override
@@ -164,11 +178,8 @@ public class JdbcPotholeDao implements PotholeDao{
                     pothole.getLon(),
                     pothole.getAddr(),
                     pothole.getNeighborhood(),
-//                    pothole.getDateCreated(),
-//                    pothole.getDateInspected(),
-//                    pothole.getDateRepaired(),
-//                    pothole.getCurrentStatus(),
-//                    pothole.getSeverity(),
+                    // removed date_created, date_inspected, date_repaired, current_status, and severity from this,
+                    // since we are defining default values for them above.
                     pothole.getDimensions(),
                     pothole.getNotes());
             return getPotholeById(newPotholeID);
@@ -178,18 +189,86 @@ public class JdbcPotholeDao implements PotholeDao{
     }
 
     @Override
-    public void update(Pothole pothole) {
-       String sqlUpdate = "UPDATE pothole SET" + potholeTableFields + "=? WHERE" + potholeTableFields + "=?";
-       jdbcTemplate.update(sqlUpdate, potholeTableFields);
+    public Pothole updateBasic(Pothole pothole, int id) {
+       String sqlUpdate = "UPDATE potholes SET " +
+                "lat = ?, " +
+                "lon = ?, " +
+                "addr = ?, " +
+                "neighborhood = ?, " +
+                "date_created = ?, " +
+                "dimensions = ?::pothole_dimensions, " +
+                "notes = ? " +
+                "WHERE pothole_id = ?;";
+       jdbcTemplate.update(sqlUpdate,
+               pothole.getLat(),
+               pothole.getLon(),
+               pothole.getAddr(),
+               pothole.getNeighborhood(),
+               pothole.getDateCreated(),
+               // removed date_inspected, date_repaired, current_status, and severity from this update method
+               // as we do not want to permit all users to update these fields
+               pothole.getDimensions(),
+               pothole.getNotes(),
+               id);
+       return getPotholeById(id);
     }
 
     @Override
-    public boolean deletePothole(int potholeId) {
-        String sql = "DELETE FROM potholes WHERE pothole_id = ?;";
-       return  jdbcTemplate.update(sql, potholeId) == 1;
+    public Pothole updateFull(Pothole pothole, int id) {
+        String sqlUpdate = "UPDATE potholes SET " +
+                "lat = ?, " +
+                "lon = ?, " +
+                "addr = ?, " +
+                "neighborhood = ?, " +
+                "date_created = ?, " +
+                "date_inspected = ?, " +
+                "date_repaired = ?, " +
+                "current_status = ?::pothole_status, " +
+                "severity = ?::pothole_severity, " +
+                "dimensions = ?::pothole_dimensions, " +
+                "notes = ? " +
+                "WHERE pothole_id = ?;";
+        jdbcTemplate.update(sqlUpdate,
+                pothole.getLat(),
+                pothole.getLon(),
+                pothole.getAddr(),
+                pothole.getNeighborhood(),
+                pothole.getDateCreated(),
+                pothole.getDateInspected(),
+                pothole.getDateRepaired(),
+                pothole.getCurrentStatus(),
+                pothole.getSeverity(),
+                pothole.getDimensions(),
+                pothole.getNotes(),
+                id);
+        return getPotholeById(id);
     }
 
+    @Override
+    public boolean deletePothole(int potholeId, String userName) {
+        String userNameSql = "SELECT user_id FROM users WHERE username = ?";
+        SqlRowSet userResults = jdbcTemplate.queryForRowSet(userNameSql, userName);
+        int userId = -1;
+        if(userResults.next()){
+            userId = userResults.getInt("user_id");
+        }
 
+        String submitterSql = "SELECT submitter_id FROM potholes WHERE pothole_id = ?";
+        SqlRowSet submitterResults = jdbcTemplate.queryForRowSet(submitterSql, potholeId);
+        int submitterId = -1;
+        if(submitterResults.next()){
+            submitterId = submitterResults.getInt("submitter_id");
+
+        }
+
+        if (userId == -1 || submitterId == -1 || userId != submitterId){
+            return false;
+        } else {
+
+            String sql = "DELETE FROM potholes WHERE pothole_id = ?;";
+            return jdbcTemplate.update(sql, potholeId) == 1;
+        }
+    }
 
 
 
@@ -221,6 +300,7 @@ public class JdbcPotholeDao implements PotholeDao{
         pothole.setSeverity(rs.getString("severity"));
         pothole.setCurrentStatus(rs.getString("current_status"));
         pothole.setDimensions(rs.getString("dimensions"));
+        pothole.setNotes(rs.getString("notes"));
         return pothole;
     }
 
