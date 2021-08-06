@@ -1,4 +1,7 @@
+
 <template>
+
+  <div class="backgroundcontainer">
   <div id="login" class="text-center">
     <form class="form-signin" @submit.prevent="login">
      <div class="grid-container">
@@ -15,7 +18,7 @@
         role="alert"
         v-if="this.$route.query.registration"
       >Thank you for registering, please sign in.</div>
-      <label for="username" class="sr-only">Username</label>
+      <label for="username" class="sr-only">Username</label><br>
       <input
         type="text"
         id="username"
@@ -24,8 +27,8 @@
         v-model="user.username"
         required
         autofocus
-      />
-      <label for="password" class="sr-only">Password</label>
+      /><br>
+      <label for="password" class="sr-only">Password</label><br>
       <input
         type="password"
         id="password"
@@ -33,13 +36,18 @@
         placeholder="Password"
         v-model="user.password"
         required
-      />
-      <router-link :to="{ name: 'register' }">Need an account?</router-link>
+      /><br>
+      <router-link :to="{ name: 'register' }">Need an account?</router-link><br>
       <button type="submit">Sign in</button>
+<<<<<<< HEAD
     </form>
     
     
     
+=======
+    </form> 
+    </div>
+>>>>>>> 79163d8c904a8eedf970d77150d7f76514460663
   </div>
   
 </template>
@@ -81,13 +89,57 @@ export default {
   }
 };
 </script>
-<style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap');
 
-.div {
-  font-family: Gowun Batang, Arial, sans-serif;
+<style>
+div.backgroundcontainer{
+  margin: 0;
+  padding-top: 30px;
+  padding-bottom: 300px;
+  height: 100%;
+  width: 100%;
+   
+ background-image: url("https://images.unsplash.com/photo-1447357704087-5de405e80f38?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1617&q=80");
+ background-size:cover;
+ background-repeat: no-repeat;
+ background-color: #000000;
+ width: 100%;
+ height:auto;
 }
-template {
-  background-color: #e6e6e6;
+.backgroundcontainer{
+  
+  height: 100vh;
+  width: 100%;
+  background-image: url("https://images.unsplash.com/photo-1447357704087-5de405e80f38?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1617&q=80") ;
+  background-size:cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: 5s;
+
+  animation-name: animate;
+  animation-direction: alternate-reverse;
+  animation-duration: 30s;
+  animation-fill-mode:backwards;
+  animation-iteration-count: infinite;
+  animation-play-state: running;
+  animation-timing-function: ease-in-out;
 }
+
+@keyframes animate{
+  0%{
+    background-image: url("https://images.unsplash.com/photo-1614111603415-62097d5606ce?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1373&q=80");
+  } 20%{
+    background-image: url("https://images.unsplash.com/photo-1593436878321-2cadf6021994?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1349&q=80");
+  } 40% {
+    background-image: url("https://images.unsplash.com/photo-1563229603-eca60c81d02f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
+  } 60% {
+    background-image: url("https://images.unsplash.com/photo-1503387837-b154d5074bd2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1489&q=80");
+  }
+}
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 </style>

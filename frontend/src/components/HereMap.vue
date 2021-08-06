@@ -3,11 +3,16 @@
 <template>
   <div id="map">
   <!--In the following div the HERE Map will render-->
-    <div id="mapContainer" style="height:600px;width:100%" ref="hereMap"></div>
+    <div id="mapContainer" style="height:100%;width:100%" ref="hereMap"></div>
+    <button @click.prevent="getCoords">get coords</button>
+    <button @click.prevent="reverseGeocode">reverseGeocode</button>
+    <div>lat: {{this.lat}}, long: {{this.long}} </div>
   </div>
 </template>
 
 <script>
+import neighborhoodService from "../services/NeighborhoodService";
+
 export default {
   name: "HereMap",
   props: {
@@ -16,18 +21,29 @@ export default {
   },
   data() {
     return {
-      platform: null,
-      apikey: "{gfjDkWIjpaACkQgvCKHvIcyEuH1rDgA41LDywM7Po4U}"
+      platform: {},
+      map: {},
+      markers: [],
+      ui: {},
+      lat: 0,
+      long: 0,
+      reverseGeocodeResponse: {},
+      address: "",
+      neighborhoodName: "",
       // You can get the API KEY from developer.here.com
     };
   },
-  async mounted() {
-    // Initialize the platform object:
-    const platform = new window.H.service.Platform({
-      apikey: this.apikey
+  created() {
+        // Initialize the platform object:
+    this.platform = new window.H.service.Platform({
+      apikey: "de4YVe5qMpVeuGpjsJ3AlPUe-mwokn-D-zmqGbx0JVg"
     });
-    this.platform = platform;
+  },
+  async mounted() {
     this.initializeHereMap();
+    this.getCoords();
+  
+
   },
   methods: {
     initializeHereMap() { // rendering map
@@ -35,33 +51,64 @@ export default {
       const mapContainer = this.$refs.hereMap;
       const H = window.H;
       // Obtain the default map types from the platform object
-      var maptypes = this.platform.createDefaultLayers();
+      let maptypes = this.platform.createDefaultLayers();
 
-      // Instantiate (and display) a map object:
-      var map = new H.Map(mapContainer, maptypes.vector.normal.map, {
+      // update this.map (and display) a map object:
+      this.map = new H.Map(mapContainer, maptypes.vector.normal.map, {
         zoom: 12,
         center: this.center
       });
-
-      addEventListener("resize", () => map.getViewPort().resize());
+      //add event listeners for reshaping the viewport and marker dragging
+      addEventListener("resize", () => this.map.getViewPort().resize());
+      
 
       // add behavior control
-      new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+      new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
 
       // add UI
-      H.ui.UI.createDefault(map, maptypes);
+      this.ui = H.ui.UI.createDefault(this.map, maptypes);
       // End rendering the initial map
-    }
+
+    },
+    getCoords() {
+      //collect coordinates
+      navigator.geolocation.getCurrentPosition((loc) => {
+        this.lat = loc.coords.latitude;
+        this.long = loc.coords.longitude;
+      })  
+    },
+    reverseGeocode() {
+      neighborhoodService.reverseGeocode(this.lat, this.long)
+      .then((response => {
+      this.reverseGeocodeResponse = response.data;
+      this.neighborhoodName = response.data.results[0].address_components[2].long_name;
+      const fullAddress = response.data.results[0].formatted_address;
+      this.address = fullAddress.substring(0, fullAddress.length - 5);
+      }))
+  },
+    dropMarker(position, data) {
+      const H = window.H;
+      let marker = new H.map.Marker({lat: position.Latitude, lng: position.Longitude});
+      //add listener to every marker
+      marker.addEventListener("tap", () => {
+        console.log(data)
+        this.$store.state.currentMarker = data;
+        });
+    this.map.addObject(marker);
   }
-};
+    ,
+
+   
+}};
 </script>
 
 <style scoped>
 #map {
-  width: 60vw;
+  /* width: 60vw; */
+  flex-grow: 3;
   min-width: 360px;
   text-align: center;
-  margin: 5% auto;
+  margin: 0 20px;
   background-color: #ccc;
 }
 </style>
