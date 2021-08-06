@@ -5,6 +5,7 @@
         <li>Total Number of Potholes: {{ numberOfPotholes }}</li>
         <li>Potholes of low severity: {{ numberOfPotholesOfLowSeverity }}</li>
         <li>Potholes of medium severity: </li>
+        <li>Neighborhood with most potholes: {{potholesPerNeighborhood.neighborhood}} : {{potholesPerNeighborhood.occurrence}}</li>
       </ul>
   </div>
 </template>
@@ -31,6 +32,35 @@ export default {
                 return pothole.severity === "medium"
             }).length;
         },
+        potholesPerNeighborhood() {
+            let arr = this.$store.state.allPotholes;
+            let key = "neighborhood";
+            let arr2 = [];
+
+            arr.forEach((x)=>{
+       
+            // Checking if there is any object in arr2
+            // which contains the key value
+            if(arr2.some((val)=>{ return val[key] == x[key] })){
+                
+            // If yes! then increase the occurrence by 1
+            arr2.forEach((k)=>{
+                if(k[key] === x[key]){ 
+                k["occurrence"]++
+                }
+            })
+                
+            }else{
+            //if not, add it and set occurence to 1
+            let a = {}
+            a[key] = x[key]
+            a["occurrence"] = 1
+            arr2.push(a);
+            }
+        })
+        arr2.sort((a,b) => parseInt(a.occurrence) - parseInt(b.occurrence))   
+        return arr2[arr2.length -1];
+        }
         //add computed data methods for high severity, extreme severity, and find other things like the neighborhood with the most potholes, or any other useful info you can think of.
     },
     created() {
