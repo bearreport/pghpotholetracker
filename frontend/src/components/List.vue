@@ -123,7 +123,7 @@ export default {
     },
     created() {
       potholeService.getAllPotholes().then((response) => {
-          this.$store.state.allPotholes = response.data;
+          this.$store.commit('GET_POTHOLES', response.data)
       });
     },
     methods: {
@@ -133,7 +133,10 @@ export default {
         }
       },
       clearEdited() {
-        this.potholesBeingEdited = []
+        potholeService.getAllPotholes().then((response) => {
+          this.$store.commit('GET_POTHOLES', response.data)
+        });
+        this.potholesBeingEdited = [];
       },
       forceGetAllPotholes() {
         potholeService.getAllPotholes().then((response) => {
@@ -176,22 +179,38 @@ export default {
           return null;
         }
         if (confirm("You are about to delete the following potholes: \n" + this.selectedPotholeIDs + "\n\n Are you sure?")) {
+
           this.selectedPotholeIDs.forEach((potholeId) => {
-            this.deletePothole(potholeId);
-            this.filteredList = this.filteredList.filter((pothole) => {
-              return pothole.potholeId !== potholeId;
-             })
-          });
-          this.selectedPotholeIDs = [];
-          this.$router.go();
+            potholeService
+              .deletePotholeByIdFull(potholeId)
+              .then((response) => {
+                if (response.status !== 200) {
+                  alert("Error deleting potholes..." + this.errorMsg)
+                } else {
+                  this.$store.commit("REMOVE_POTHOLE_FROM_STORE", potholeId);
+                }
+              })
+              .catch((error) => {
+                if (error.response) {
+                  this.errorMsg = "Error deleting pothole. Response received was '" + error.response.statusText + "'.";
+                } else if (error.request) {
+                  this.errorMsg = "Error deleting pothole. Server could not be reached.";
+                } else {
+                  this.errorMsh = "Error deleting pothole. Request could not be created.";
+                }
+              })
+              this.selectedPotholeIDs = [];
+              // this.$router.go();
+          })
         }
-      }, 
+      },
       updatePothole(pothole) {
         potholeService
           .updatePotholeByIdFull(pothole)
           .then(response => {
           if (response.status === 200) {
-            this.$router.go();
+            this.$store.commit("UPDATE_POTHOLE_IN_STORE", pothole);
+            this.potholesBeingEdited = [];
           }
         })
       }
