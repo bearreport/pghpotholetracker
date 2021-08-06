@@ -13,8 +13,9 @@
 import MapSidebar from '@/components/MapSidebar.vue'
 import MapModule from '../components/MapModule.vue'
 
+
 export default {
-  name: 'app',
+  name: 'Map',
   components: {
     MapSidebar,
     MapModule
