@@ -38,6 +38,18 @@
         ]"
       ></formulate-input>
       <formulate-input
+        type="text"
+        name="lat"
+        label= latitude
+        v-model="pothole.lat">
+      </formulate-input>
+        <formulate-input
+        type="text"
+        name="lng"
+        label= longitude
+        v-model="pothole.lon">
+      </formulate-input>
+      <formulate-input
         type="textarea"
         label="Notes"
         validation="max:250,length"
@@ -77,7 +89,9 @@ export default {
             dateRepaired: null,
             severity: ""
             },
-            geocodeResponse: {}
+            geocodeResponse: {},
+            clickedLat: 0,
+            clickedLng: 0
         }
 
     },
