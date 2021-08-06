@@ -70,6 +70,7 @@ export default {
       // add UI
       this.ui = H.ui.UI.createDefault(this.map, maptypes);
       // End rendering the initial map
+      this.setUpClickListener(this.map);
     },
      getCoords() {
       //collect coordinates
@@ -102,8 +103,15 @@ export default {
         this.$store.state.currentMarker = data;
         });
     this.map.addObject(marker);
+  },
+  setUpClickListener(map) {
+      map.addEventListener('tap', function (evt) {
+      let coord = map.screenToGeo(evt.currentPointer.viewportX,
+            evt.currentPointer.viewportY);
+                console.log("Clicked at:" + coord.lat.toFixed(4) + " and " + coord.lng.toFixed(4));})
+            ;
+
   }
-    ,
 
    
 }};
