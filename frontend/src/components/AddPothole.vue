@@ -52,11 +52,14 @@
       label="Submit"
     ></formulate-input>
   </formulate-form>
-    <button @click.prevent="getCoords">Add Precise GPS Coordinates to your submission</button>
+    <button @click.prevent="getCoords">Add GPS Coordinates of your current position to your submission</button>
+    <button @click.prevent="geocode">Add GPS Coordinates of address to your submission</button>
+
     </div>
 </template>
 
 <script>
+import neighborhoodService from '../services/NeighborhoodService'
 export default {
     data() {
         return {
@@ -73,7 +76,8 @@ export default {
             dateInspected: null,
             dateRepaired: null,
             severity: ""
-            }
+            },
+            geocodeResponse: {}
         }
 
     },
@@ -84,6 +88,27 @@ export default {
         this.pothole.lat = loc.coords.latitude;
         this.pothole.lon = loc.coords.longitude;
       })  
+    },
+    reverseGeocode() {
+        neighborhoodService.reverseGeocode(this.pothole.lat, this.pothole.long)
+        .then((response => {
+        this.pothole.neighborhood = response.data.results[0].address_components[2].long_name;
+      }))   
+    },
+     geocode() {
+        neighborhoodService.geocode(this.pothole.address)
+        .then((response => {
+        this.pothole.neighborhood = response.data.results[0].address_components[2].long_name;
+        this.pothole.lat = response.data.results[0].geometry.location.lat;
+        this.pothole.lon = response.data.results[0].geometry.location.lng;
+
+      }))   
+    },
+    
+    submitHandler() {
+        //fire off object + credentials to API
+        //handle necessary geocoding to grab coordinates from the address
+
     }
     }
 }
