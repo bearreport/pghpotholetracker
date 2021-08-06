@@ -39,15 +39,8 @@
       /><br>
       <router-link :to="{ name: 'register' }">Need an account?</router-link><br>
       <button type="submit">Sign in</button>
-<<<<<<< HEAD
-    </form>
-    
-    
-    
-=======
     </form> 
     </div>
->>>>>>> 79163d8c904a8eedf970d77150d7f76514460663
   </div>
   
 </template>
