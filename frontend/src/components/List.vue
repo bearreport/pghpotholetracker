@@ -23,6 +23,7 @@
       </thead>
       <tbody>
           <tr v-for="pothole in filteredList" v-bind:key="pothole.potholeId" v-bind:class="{ active : selectedPotholeIDs.includes(pothole.potholeId) }">
+           
             <td>
               <input
                 type="checkbox"
@@ -32,16 +33,20 @@
                 v-bind:checked="selectedPotholeIDs.includes(pothole.potholeId)"
               />
             </td>
-            <td v-if="potholesBeingEdited.includes(pothole)"><input class="idField" type="number" step="any" v-model="potholesBeingEdited[0].potholeId"></td>
-            <td v-if="potholesBeingEdited.includes(pothole)"><input class="idField" type="number" step="any" v-model="potholesBeingEdited[0].submitterId"></td>
-            <td v-if="potholesBeingEdited.includes(pothole)"><input type="text" v-model="potholesBeingEdited[0].lat"></td>
-            <td v-if="potholesBeingEdited.includes(pothole)"><input type="text" v-model="potholesBeingEdited[0].lon"></td>
-            <td v-if="potholesBeingEdited.includes(pothole)"><input type="text" v-model="potholesBeingEdited[0].addr"></td>
-            <td v-if="potholesBeingEdited.includes(pothole)"><input type="text" v-model="potholesBeingEdited[0].neighborhood"></td>
-            <td v-if="potholesBeingEdited.includes(pothole)"><input type="date" v-model="potholesBeingEdited[0].dateCreated"></td>
-            <td v-if="potholesBeingEdited.includes(pothole)"><input type="date" v-model="potholesBeingEdited[0].dateInspected"></td>
-            <td v-if="potholesBeingEdited.includes(pothole)"><input type="date" v-model="potholesBeingEdited[0].dateRepaired"></td>
-            <td v-if="potholesBeingEdited.includes(pothole)">
+
+            <td>{{ pothole.potholeId }}</td>
+            <td>{{ pothole.submitterId }}</td>
+
+            <!-- <td v-if="potholesBeingEdited.includes(pothole)"><input class="idField" type="number" step="any" v-model="potholesBeingEdited[0].potholeId"></td>
+            <td v-if="potholesBeingEdited.includes(pothole)"><input class="idField" type="number" step="any" v-model="potholesBeingEdited[0].submitterId"></td> -->
+            <td class="cell" v-if="potholesBeingEdited.includes(pothole)"><input type="text" v-model="potholesBeingEdited[0].lat"></td>
+            <td class="cell" v-if="potholesBeingEdited.includes(pothole)"><input type="text" v-model="potholesBeingEdited[0].lon"></td>
+            <td class="cell" v-if="potholesBeingEdited.includes(pothole)"><input type="text" v-model="potholesBeingEdited[0].addr"></td>
+            <td class="cell" v-if="potholesBeingEdited.includes(pothole)"><input type="text" v-model="potholesBeingEdited[0].neighborhood"></td>
+            <td class="cell" v-if="potholesBeingEdited.includes(pothole)"><input type="date" v-model="potholesBeingEdited[0].dateCreated"></td>
+            <td class="cell" v-if="potholesBeingEdited.includes(pothole)"><input type="date" v-model="potholesBeingEdited[0].dateInspected"></td>
+            <td class="cell" v-if="potholesBeingEdited.includes(pothole)"><input type="date" v-model="potholesBeingEdited[0].dateRepaired"></td>
+            <td class="cell" v-if="potholesBeingEdited.includes(pothole)">
               <select type="text" v-model="potholesBeingEdited[0].currentStatus">
                 <option value="uninspected">uninspected</option>
                 <option value="under inspection">under inspection</option>
@@ -66,21 +71,19 @@
                 <option value="sinkhole">sinkhole</option>
               </select>
             </td>
-            <td v-if="potholesBeingEdited.includes(pothole)"><textarea class="notes-cell" type="text" v-model="potholesBeingEdited[0].notes"></textarea></td>
+            <td class="cell" v-if="potholesBeingEdited.includes(pothole)"><textarea class="notes-cell" type="text" v-model="potholesBeingEdited[0].notes"></textarea></td>
 
-            <td v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.potholeId }}</td>
-            <td v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.submitterId }}</td>
-            <td v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.lat }}</td>
-            <td v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.lon }}</td>
-            <td v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.addr }}</td>
-            <td v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.neighborhood }}</td>
-            <td v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.dateCreated }}</td>
-            <td v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.dateInspected }}</td>
-            <td v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.dateRepaired }}</td>
-            <td v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.currentStatus }}</td>
-            <td v-if="!potholesBeingEdited.includes(pothole)"><p class="severity" v-bind:class="pothole.severity">{{ pothole.severity }}</p></td>
-            <td v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.dimensions }}</td>
-            <td v-if="!potholesBeingEdited.includes(pothole)"><textarea class="notes-cell" v-model="pothole.notes"></textarea></td>
+            <td class="cell" v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.lat }}</td>
+            <td class="cell" v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.lon }}</td>
+            <td class="cell" v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.addr }}</td>
+            <td class="cell" v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.neighborhood }}</td>
+            <td class="cell" v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.dateCreated }}</td>
+            <td class="cell" v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.dateInspected }}</td>
+            <td class="cell" v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.dateRepaired }}</td>
+            <td class="cell" v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.currentStatus }}</td>
+            <td class="cell" v-if="!potholesBeingEdited.includes(pothole)"><p class="severity" v-bind:class="pothole.severity">{{ pothole.severity }}</p></td>
+            <td class="cell" v-if="!potholesBeingEdited.includes(pothole)">{{ pothole.dimensions }}</td>
+            <td class="cell" v-if="!potholesBeingEdited.includes(pothole)"><textarea class="notes-cell" v-model="pothole.notes"></textarea></td>
 
 
             <td>
@@ -276,6 +279,9 @@ input[type=date] {
   background-color: greenyellow;
 }
 .idField {
+  width: 50px;
+}
+.class {
   width: 50px;
 }
 </style>
