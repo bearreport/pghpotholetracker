@@ -9,9 +9,9 @@
         <li> Potholes of extreme severity: {{numberOfPotholesExtremeSeverity}}</li>
       </ul>
       <h2>Neighborhoods with most number of potholes</h2>
-      <ul>
-      <li>Neighborhood with most potholes: {{potholesPerNeighborhood.neighborhood}} : {{potholesPerNeighborhood.occurrence}}</li>
-      </ul>
+      <ol>
+      <li class="neighborhood"> {{potholesPerNeighborhood.neighborhood}} : {{potholesPerNeighborhood.occurrence}}</li>
+      </ol>
 
   </div>
 </template>
@@ -102,5 +102,9 @@ export default {
 #dashboard-list {
     text-align: left;
     font-weight: bold;
+}
+.neighborhood {
+    text-align: left;
+    padding-bottom: 15px;
 }
 </style>

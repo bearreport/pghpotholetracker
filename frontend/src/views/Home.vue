@@ -3,27 +3,7 @@
     <h1>Home</h1>
     <p>You must be authenticated to see this</p>
     <dashboard/>
-      <!--<div class= “menuButton”>
-       <button onclick=“myFunction()” class=“dropbtn”>
-        <div class=“container” onclick=“menuButton(this)“>
-        <div class=“bar1”></div>
-        <div class="bar2"></div>
-        <div class=“bar3”></div>
-        <div id=“myDropdown” class=“dropdown-content”>
-           <a href=“#”>Report Pothole</a>
-           <a href=“#”>Pothole Repair ETA</a>
-           <a href=“#”>Pothole Severity</a
-       
-       </div>
-       </button>
-       </div>
-       <div class=“grid-itemC”>
-         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
-           Beatae tempore in fugit ratione temporibus voluptatibus quisquam suscipit aspernatur 
-           magnam rem labore architecto nam atque saepe itaque neque id, accusamus exercitationem?</p>
-     </div> 
-    </div>-->
-    </div>
+</div>
 </template>
 
 <script>
