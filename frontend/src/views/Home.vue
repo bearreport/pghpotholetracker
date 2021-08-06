@@ -2,7 +2,12 @@
   <div class=“home”>
     <h1>Home</h1>
     <p>You must be authenticated to see this</p>
+<<<<<<< HEAD
       <!--<div class= “menuButton”>
+=======
+    <dashboard/>
+      <!-- <div class= “menuButton”>
+>>>>>>> f56a660ff26a0c96f14206ab77fa9b1ab9ceb950
        <button onclick=“myFunction()” class=“dropbtn”>
         <div class=“container” onclick=“menuButton(this)“>
         <div class=“bar1”></div>
@@ -26,12 +31,18 @@
 </template>
 
 <script>
+import Dashboard from '../components/Dashboard.vue';
+
 export default {
+  components: { Dashboard },
   name: "home"
 };
 </script>
 
 <style>
+.home {
+
+}
 .container {
     display: inline-block;
     cursor: pointer;
