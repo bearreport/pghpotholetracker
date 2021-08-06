@@ -4,8 +4,12 @@
       <ul id="dashboard-list">
         <li>Total Number of Potholes: {{ numberOfPotholes }}</li>
         <li>Potholes of low severity: {{ numberOfPotholesOfLowSeverity }}</li>
-        <li>Potholes of medium severity: </li>
+        <li>Potholes of medium severity: {{numberOfPotholesOfMediumSeverity}} </li>
+        <li>Potholes of high severity: {{numberOfPotholesofHighSeverity}} </li>
+        <li> Potholes of extreme severity: {{numberOfPotholesExtremeSeverity}}</li>
       </ul>
+      <h2>Neighborhoods with most number of potholes</h2>
+
   </div>
 </template>
 
@@ -32,13 +36,25 @@ export default {
             }).length;
         },
         //add computed data methods for high severity, extreme severity, and find other things like the neighborhood with the most potholes, or any other useful info you can think of.
-    },
+        numberOfPotholesOfHighSeverity() {
+            return this.$store.state.allPotholes.filter((pothole) => {
+                return pothole.severity === "high"
+            }).length;
+        },
+        numberOfPotholesExtremeSeverity() {
+            return this.$store.state.allPotholes.filter((pothole) => {
+                return pothole.severity === "extreme"
+            }).length;
+            
+        }},
+    
     created() {
       potholeService.getAllPotholes().then((response) => {
           this.$store.state.allPotholes = response.data;
-      });
+      })
     }
 }
+
 </script>
 
 <style>
