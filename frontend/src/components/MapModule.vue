@@ -30,12 +30,11 @@ export default {
 }
   
   },
-  mounted() {
-    potholeService.getAllPotholes().then((response) => {
-        this.potholes = response.data;
-        this.mapPotholeArray();
-    });   
-  },
+  created() {
+      potholeService.getAllPotholes().then((response) => {
+          this.$store.commit('GET_POTHOLES', response.data)
+      });
+    },
   methods: {
     mapPotholeArray() {
       let map = this.$refs.map;

@@ -41,13 +41,13 @@
         type="text"
         name="lat"
         label= latitude
-        v-model="pothole.lat">
+        v-model="pothole.lat" readonly>
       </formulate-input>
         <formulate-input
         type="text"
         name="lng"
         label= longitude
-        v-model="pothole.lon">
+        v-model="pothole.lon" readonly>
       </formulate-input>
       <formulate-input
         type="textarea"
@@ -90,8 +90,6 @@ export default {
             severity: ""
             },
             geocodeResponse: {},
-            clickedLat: 0,
-            clickedLng: 0
         }
 
     },
@@ -99,6 +97,8 @@ export default {
     getCoords() {
       //collect coordinates
       navigator.geolocation.getCurrentPosition((loc) => {
+        this.$store.commit("UPDATE_LAT", loc.coords.latitude);
+        this.$store.commit("UPDATE_LNG",loc.coords.longitude);
         this.pothole.lat = loc.coords.latitude;
         this.pothole.lon = loc.coords.longitude;
       })  
@@ -113,6 +113,8 @@ export default {
         neighborhoodService.geocode(this.pothole.address)
         .then((response => {
         this.pothole.neighborhood = response.data.results[0].address_components[2].long_name;
+        this.$store.commit("UPDATE_LAT", response.data.results[0].geometry.location.lat);
+        this.$store.commit("UPDATE_LNG",response.data.results[0].geometry.location.lng);
         this.pothole.lat = response.data.results[0].geometry.location.lat;
         this.pothole.lon = response.data.results[0].geometry.location.lng;
 

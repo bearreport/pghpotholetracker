@@ -6,7 +6,6 @@
     <div id="mapContainer" style="height:100%;width:100%" ref="hereMap"></div>
     <button @click.prevent="getCoords">get coords</button>
     <button @click.prevent="reverseGeocode">reverseGeocode</button>
-    <div>lat: {{this.lat}}, long: {{this.long}} </div>
   </div>
 
 </template>
@@ -105,12 +104,13 @@ export default {
     this.map.addObject(marker);
   },
   setUpClickListener(map) {
-      map.addEventListener('tap', function (evt) {
+      map.addEventListener('tap', (evt) => {
       let coord = map.screenToGeo(evt.currentPointer.viewportX,
-            evt.currentPointer.viewportY);
-                console.log("Clicked at:" + coord.lat.toFixed(4) + " and " + coord.lng.toFixed(4));})
-            ;
-
+        evt.currentPointer.viewportY);
+      console.log("Clicked at:" + coord.lat.toFixed(6) + " and " + coord.lng.toFixed(6));
+      this.$store.commit("UPDATE_LAT", coord.lat.toFixed(6));
+      this.$store.commit("UPDATE_LNG", coord.lng.toFixed(6));
+      });
   }
 
    
