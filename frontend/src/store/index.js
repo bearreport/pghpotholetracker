@@ -53,6 +53,14 @@ export default new Vuex.Store({
         return pothole.potholeId !== potholeForChange.potholeId;
       })
       state.allPotholes.push(potholeForChange);
+    },
+    UPDATE_LAT(state, lat) {
+      state.addLat = lat;
+      return lat;
+    },
+    UPDATE_LNG(state, lng) {
+      state.addLng = lng;
+      return lng;
     }
   }
 })
