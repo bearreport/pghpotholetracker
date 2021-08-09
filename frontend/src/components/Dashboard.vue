@@ -1,13 +1,22 @@
 <template>
+<div>
+
   <div class="dashboard">
       <h1>Dashboard</h1>
       <ul id="dashboard-list">
         <li>Total Number of Potholes: {{ numberOfPotholes }}</li>
         <li>Potholes of low severity: {{ numberOfPotholesOfLowSeverity }}</li>
-        <li>Potholes of medium severity: </li>
-        <li>Neighborhood with most potholes: {{potholesPerNeighborhood.neighborhood}} : {{potholesPerNeighborhood.occurrence}}</li>
+        <li>Potholes of medium severity: {{numberOfPotholesOfMediumSeverity}} </li>
+        <li>Potholes of high severity: {{numberOfPotholesofHighSeverity}} </li>
+        <li> Potholes of extreme severity: {{numberOfPotholesExtremeSeverity}}</li>
       </ul>
+      <h2>Neighborhoods with most number of potholes</h2>
+      <ol>
+      <li class="neighborhood"> {{potholesPerNeighborhood.neighborhood}} : {{potholesPerNeighborhood.occurrence}}</li>
+      </ol>
   </div>
+  </div>
+  
 </template>
 
 <script>
@@ -31,6 +40,17 @@ export default {
             return this.$store.state.allPotholes.filter((pothole) => {
                 return pothole.severity === "medium"
             }).length;
+        },
+         numberOfPotholesOfHighSeverity() {
+            return this.$store.state.allPotholes.filter((pothole) => {
+                return pothole.severity === "high"
+            }).length;
+        },
+        numberOfPotholesExtremeSeverity() {
+            return this.$store.state.allPotholes.filter((pothole) => {
+                return pothole.severity === "extreme"
+            }).length;
+            
         },
         potholesPerNeighborhood() {
             let arr = this.$store.state.allPotholes;
@@ -61,14 +81,15 @@ export default {
         arr2.sort((a,b) => parseInt(a.occurrence) - parseInt(b.occurrence))   
         return arr2[arr2.length -1];
         }
-        //add computed data methods for high severity, extreme severity, and find other things like the neighborhood with the most potholes, or any other useful info you can think of.
-    },
+        },
+    
     created() {
       potholeService.getAllPotholes().then((response) => {
           this.$store.state.allPotholes = response.data;
-      });
+      })
     }
 }
+
 </script>
 
 <style>
@@ -80,9 +101,16 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   text-align: center;
   padding: 0 12px;
+  margin: 0%;
 }
 #dashboard-list {
     text-align: left;
     font-weight: bold;
 }
+.neighborhood {
+    text-align: left;
+    padding-bottom: 15px;
+}
+
+
 </style>
