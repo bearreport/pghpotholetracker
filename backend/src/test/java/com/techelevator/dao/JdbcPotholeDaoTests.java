@@ -71,7 +71,7 @@ public class JdbcPotholeDaoTests extends FinalCapstoneDaoTests {
         testPothole.setPotholeId(98L);
         assertPotholesMatch("createPothole returned pothole with wrong or partial data", testPothole, createdPothole);
     }
-    
+
     @Test
     public void deletePotholeFull_deleted_pothole_cant_be_retrieved() {
         sut.deletePotholeFull(98);

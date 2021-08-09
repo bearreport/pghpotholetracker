@@ -4,6 +4,7 @@ import com.techelevator.PotholeNotFoundException;
 import com.techelevator.exception.UserDoesNotOwnPotholeException;
 import com.techelevator.model.Pothole;
 import com.techelevator.model.User;
+import com.techelevator.model.UserAlreadyExistsException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -190,29 +191,51 @@ public class JdbcPotholeDao implements PotholeDao{
     }
 
     @Override
-    public Pothole updateBasic(Pothole pothole, int id) {
-       String sqlUpdate = "UPDATE potholes SET " +
-                "lat = ?, " +
-                "lon = ?, " +
-                "addr = ?, " +
-                "neighborhood = ?, " +
-                "date_created = ?, " +
-                "dimensions = ?::pothole_dimensions, " +
-                "notes = ? " +
-                "WHERE pothole_id = ?;";
-       jdbcTemplate.update(sqlUpdate,
-               pothole.getLat(),
-               pothole.getLon(),
-               pothole.getAddr(),
-               pothole.getNeighborhood(),
-               pothole.getDateCreated(),
-               // removed date_inspected, date_repaired, current_status, and severity from this update method
-               // as we do not want to permit all users to update these fields
-               pothole.getDimensions(),
-               pothole.getNotes(),
-               id);
-       return getPotholeById(id);
+    public Pothole updateBasic(Pothole pothole, int id, String userName) {
+        String userNameSql = "SELECT user_id FROM users WHERE username = ?";
+        SqlRowSet userResults = jdbcTemplate.queryForRowSet(userNameSql, userName);
+        int userId = -1;
+        if(userResults.next()){
+            userId = userResults.getInt("user_id");
+        }
+
+        String submitterSql = "SELECT submitter_id FROM potholes WHERE pothole_id = ?";
+        SqlRowSet submitterResults = jdbcTemplate.queryForRowSet(submitterSql, pothole);
+        int submitterId = -1;
+        if(submitterResults.next()){
+            submitterId = submitterResults.getInt("submitter_id");
+
+        }
+
+        if (userId == -1 || submitterId == -1 || userId != submitterId){
+            throw new UserAlreadyExistsException();
+        } else {
+
+            String sqlUpdate = "UPDATE potholes SET " +
+                    "lat = ?, " +
+                    "lon = ?, " +
+                    "addr = ?, " +
+                    "neighborhood = ?, " +
+                    "date_created = ?, " +
+                    "dimensions = ?::pothole_dimensions, " +
+                    "notes = ? " +
+                    "WHERE pothole_id = ?;";
+            jdbcTemplate.update(sqlUpdate,
+                    pothole.getLat(),
+                    pothole.getLon(),
+                    pothole.getAddr(),
+                    pothole.getNeighborhood(),
+                    pothole.getDateCreated(),
+                    // removed date_inspected, date_repaired, current_status, and severity from this update method
+                    // as we do not want to permit all users to update these fields
+                    pothole.getDimensions(),
+                    pothole.getNotes(),
+                    id);
+            return getPotholeById(id);
+        }
     }
+
+
 
     @Override
     public Pothole updateFull(Pothole pothole, int id) {
