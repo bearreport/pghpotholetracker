@@ -29,7 +29,7 @@ public interface PotholeDao {
 
     Pothole createPothole(Pothole pothole, String userName);
 
-    Pothole updateBasic(Pothole pothole, int id) throws PotholeNotFoundException;
+    Pothole updateBasic(Pothole pothole, int id, String userName) throws PotholeNotFoundException;
 
     Pothole updateFull(Pothole pothole, int id) throws PotholeNotFoundException;
 
