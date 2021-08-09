@@ -84,6 +84,7 @@ export default {
 
 <style>
 .dashboard {
+    
   background-color: #025252;
   max-width: 350px;
   border-radius: 15px;
@@ -91,6 +92,7 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   text-align: center;
   padding: 0 12px;
+  
 }
 #dashboard-list {
     text-align: left;
