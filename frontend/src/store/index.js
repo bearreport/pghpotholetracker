@@ -57,12 +57,12 @@ export default new Vuex.Store({
       state.allPotholes.push(potholeForChange);
     },
     UPDATE_LAT(state, lat) {
-      state.addLat = lat;
+      state.lat = lat;
       return lat;
     },
-    UPDATE_LNG(state, lng) {
-      state.addLng = lng;
-      return lng;
+    UPDATE_LNG(state, lon) {
+      state.lon = lon;
+      return lon;
     }
   }
 })
