@@ -71,8 +71,8 @@ public class PotholeController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
-    public Pothole updatePotholeBasic(@RequestBody Pothole pothole, @PathVariable int id) throws PotholeNotFoundException{
-        return potholeDao.updateBasic(pothole, id);
+    public Pothole updatePotholeBasic(@RequestBody Pothole pothole, @PathVariable int id, Principal principal) throws PotholeNotFoundException{
+        return potholeDao.updateBasic(pothole, id, principal.getName());
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
