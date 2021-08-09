@@ -40,6 +40,7 @@
       <router-link class="need-account" :to="{ name: 'register' }">Need an account?</router-link><br>
       <button class="sign-in-button" type="submit">Sign in</button>
     </form> 
+    <p>&copy; JJBRL</p>
     </div>
   </div>
   
@@ -155,6 +156,9 @@ form {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+p {
+  color: white;
 }
 
 </style>

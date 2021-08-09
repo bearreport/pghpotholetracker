@@ -7,7 +7,8 @@
     <div id="dashboard-div">
     <dashboard/>
     </div>
-   
+    
+   <p>&copy; JJBRL</p>
 </div>
 </template>
 
@@ -68,13 +69,13 @@ font-size: 15px;
    display: flex;
    flex-direction: column;
    justify-content: center;
-
+  
  }
  #dashboard-div {
    margin: auto;
  }
  .lorem {
    column-count: 2;
-   column-gap: 15px;
+   column-gap: 8px;
  }
 </style>
