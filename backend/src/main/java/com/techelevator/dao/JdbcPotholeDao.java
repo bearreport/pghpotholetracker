@@ -3,6 +3,7 @@ package com.techelevator.dao;
 import com.techelevator.PotholeNotFoundException;
 import com.techelevator.model.Pothole;
 import com.techelevator.model.User;
+import com.techelevator.model.UserAlreadyExistsException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -206,7 +207,7 @@ public class JdbcPotholeDao implements PotholeDao{
         }
 
         if (userId == -1 || submitterId == -1 || userId != submitterId){
-            throw new
+            throw new UserAlreadyExistsException();
         } else {
 
             String sqlUpdate = "UPDATE potholes SET " +
