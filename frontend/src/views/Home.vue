@@ -1,11 +1,13 @@
 <template>
-  <div class=“home”>
+  <div class="home">
     <h1>Home</h1>
-    <p>You must be authenticated to see this</p>
-    <dashboard/>
-   <div class="paragraph">
-  <p class="lorem"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, odit, tempora non nulla error quam magnam ipsa dolorem eos excepturi fugiat explicabo tempore ea temporibus voluptatibus. Ea inventore enim Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestias voluptas exercitationem fugiat eum similique saepe odit sunt enim sapiente, quos vitae? Cumque fugiat numquam corrupti nostrum deleniti amet sit sint.</p>
+    <div class="paragraph" id="para">
+  <p class="lorem"> Welcome to Pothole Tracker! Here from this page you can get most information about the amount of potholes, which neighborhood has the most potholes and severity in your area!</p>
 </div>
+    <div id="dashboard-div">
+    <dashboard/>
+    </div>
+   
 </div>
 </template>
 
@@ -58,8 +60,21 @@ font-size: 15px;
   .show {display:block;}
 
   .paragraph {
-     column-count: 2;
-    column-gap: 20px;
+   display: flex;
+   align-content: center;
+   
   }
- 
+ .home {
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+
+ }
+ #dashboard-div {
+   margin: auto;
+ }
+ .lorem {
+   column-count: 2;
+   column-gap: 15px;
+ }
 </style>

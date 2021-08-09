@@ -1,6 +1,7 @@
 package com.techelevator.dao;
 
 import com.techelevator.PotholeNotFoundException;
+import com.techelevator.exception.UserDoesNotOwnPotholeException;
 import com.techelevator.model.Pothole;
 import com.techelevator.model.User;
 
@@ -32,7 +33,7 @@ public interface PotholeDao {
 
     Pothole updateFull(Pothole pothole, int id) throws PotholeNotFoundException;
 
-    boolean deletePotholeBasic(int pothole_id, String userName) throws PotholeNotFoundException;
+    boolean deletePotholeBasic(int pothole_id, String userName) throws PotholeNotFoundException, UserDoesNotOwnPotholeException;
 
     boolean deletePotholeFull(int pothole_id) throws PotholeNotFoundException;
 }
