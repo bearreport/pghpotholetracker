@@ -21,7 +21,7 @@ export default new Vuex.Store({
     token: currentToken || '',
     user: currentUser || {},
     currentMarker: {},
-    allPotholes: {},
+    allPotholes: [],
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {
@@ -39,6 +39,20 @@ export default new Vuex.Store({
       state.token = '';
       state.user = {};
       axios.defaults.headers.common = {};
+    },
+    GET_POTHOLES(state, potholes) {
+      state.allPotholes = potholes;
+    },
+    REMOVE_POTHOLE_FROM_STORE(state, potholeId) {
+      state.allPotholes = state.allPotholes.filter((pothole) => {
+        return pothole.potholeId !== potholeId;
+      })
+    },
+    UPDATE_POTHOLE_IN_STORE(state, potholeForChange) {
+      state.allPotholes = state.allPotholes.filter((pothole) => {
+        return pothole.potholeId !== potholeForChange.potholeId;
+      })
+      state.allPotholes.push(potholeForChange);
     }
   }
 })

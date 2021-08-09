@@ -8,10 +8,12 @@
     <button @click.prevent="reverseGeocode">reverseGeocode</button>
     <div>lat: {{this.lat}}, long: {{this.long}} </div>
   </div>
+
 </template>
 
 <script>
 import neighborhoodService from "../services/NeighborhoodService";
+import potholeService from "../services/PotholeService";
 
 export default {
   name: "HereMap",
@@ -68,9 +70,9 @@ export default {
       // add UI
       this.ui = H.ui.UI.createDefault(this.map, maptypes);
       // End rendering the initial map
-
+      this.setUpClickListener(this.map);
     },
-    getCoords() {
+     getCoords() {
       //collect coordinates
       navigator.geolocation.getCurrentPosition((loc) => {
         this.lat = loc.coords.latitude;
@@ -84,7 +86,13 @@ export default {
       this.neighborhoodName = response.data.results[0].address_components[2].long_name;
       const fullAddress = response.data.results[0].formatted_address;
       this.address = fullAddress.substring(0, fullAddress.length - 5);
-      }))
+      }))   
+    },
+    getAllPotholes() {
+      potholeService.getAllPotholes().then((response) => {
+        this.potholes = response.data;
+        console.log(this.potholes)
+      })
   },
     dropMarker(position, data) {
       const H = window.H;
@@ -95,8 +103,15 @@ export default {
         this.$store.state.currentMarker = data;
         });
     this.map.addObject(marker);
+  },
+  setUpClickListener(map) {
+      map.addEventListener('tap', function (evt) {
+      let coord = map.screenToGeo(evt.currentPointer.viewportX,
+            evt.currentPointer.viewportY);
+                console.log("Clicked at:" + coord.lat.toFixed(4) + " and " + coord.lng.toFixed(4));})
+            ;
+
   }
-    ,
 
    
 }};

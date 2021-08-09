@@ -4,7 +4,10 @@
   <div class="backgroundcontainer">
   <div id="login" class="text-center">
     <form class="form-signin" @submit.prevent="login">
-      <h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
+     <div class="grid-container">
+    <div class="grid-itemA"> <h1>Pothole Tracker</h1> </div>
+    <div class="grid-itemB"><h3>We got what you need so you can speed!</h3></div>
+     </div>
       <div
         class="alert alert-danger"
         role="alert"
@@ -34,8 +37,8 @@
         v-model="user.password"
         required
       /><br>
-      <router-link :to="{ name: 'register' }">Need an account?</router-link><br>
-      <button type="submit">Sign in</button>
+      <router-link class="need-account" :to="{ name: 'register' }">Need an account?</router-link><br>
+      <button class="sign-in-button" type="submit">Sign in</button>
     </form> 
     </div>
   </div>
@@ -81,6 +84,26 @@ export default {
 </script>
 
 <style>
+#username{
+  width: 175px;
+}
+#password{
+  width: 175px;
+}
+.need-account{
+color: mintcream;
+
+}
+.need-account:hover{
+  color: blue
+}
+
+.sign-in-button{
+height: 40px;
+width: 80px;
+}
+
+
 div.backgroundcontainer{
   margin: 0;
   padding-top: 30px;
@@ -106,12 +129,16 @@ div.backgroundcontainer{
   transition: 5s;
 
   animation-name: animate;
+  
+  
   animation-direction: alternate-reverse;
-  animation-duration: 30s;
+  animation-duration: 20s;
   animation-fill-mode:backwards;
   animation-iteration-count: infinite;
   animation-play-state: running;
   animation-timing-function: ease-in-out;
+
+  
 }
 
 @keyframes animate{
@@ -121,9 +148,7 @@ div.backgroundcontainer{
     background-image: url("https://images.unsplash.com/photo-1593436878321-2cadf6021994?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1349&q=80");
   } 40% {
     background-image: url("https://images.unsplash.com/photo-1563229603-eca60c81d02f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
-  } 60% {
-    background-image: url("https://images.unsplash.com/photo-1503387837-b154d5074bd2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1489&q=80");
-  }
+  } 
 }
 form {
   display: flex;

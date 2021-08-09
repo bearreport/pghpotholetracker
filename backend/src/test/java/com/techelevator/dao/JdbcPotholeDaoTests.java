@@ -70,7 +70,7 @@ public class JdbcPotholeDaoTests extends FinalCapstoneDaoTests {
         testPothole.setPotholeId(98L);
         assertPotholesMatch("createPothole returned pothole with wrong or partial data", testPothole, createdPothole);
     }
-
+    
     @Test
     public void deletePotholeFull_deleted_pothole_cant_be_retrieved() {
         sut.deletePotholeFull(98);
@@ -94,6 +94,5 @@ public class JdbcPotholeDaoTests extends FinalCapstoneDaoTests {
         Assert.assertEquals("deletePothole left too many potholes in database", 1, potholes.size());
         assertPotholesMatch("deletePothole deleted wrong pothole", POTHOLE_1, potholes.get(0));
     }
-
 
 }

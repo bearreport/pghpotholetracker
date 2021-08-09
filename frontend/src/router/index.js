@@ -6,6 +6,7 @@ import Logout from '../views/Logout.vue'
 import Register from '../views/Register.vue'
 import Map from '../views/Map.vue'
 import PotholeList from '../views/PotholeList.vue'
+import NewPothole from '../views/NewPothole.vue'
 import store from '../store/index'
 
 Vue.use(Router)
@@ -69,7 +70,15 @@ const router = new Router({
       component: PotholeList,
       meta: {
         requiresAuth: true
-      }
+      },
+    },
+    {
+      path: "/addPothole",
+      name: "addPothole",
+      component: NewPothole,
+      meta: {
+        requiresAuth: false
+      },
     }
   ]
 })
