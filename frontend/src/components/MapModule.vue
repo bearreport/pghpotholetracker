@@ -26,16 +26,17 @@ export default {
     lat: 40.42387869, 
     lng: -79.9779719
     },
-    potholes: []
+    potholes: [],
+    draggable: {}
 }
   
   },
-  mounted() {
-    potholeService.getAllPotholes().then((response) => {
-        this.potholes = response.data;
-        this.mapPotholeArray();
-    });   
-  },
+  created() {
+      potholeService.getAllPotholes().then((response) => {
+          this.$store.commit('GET_POTHOLES', response.data)
+      });
+    },
+    
   methods: {
     mapPotholeArray() {
       let map = this.$refs.map;
@@ -68,8 +69,8 @@ export default {
 
 <style>
 #map {
-  height: 690px;
   padding: 0;
+  border-radius: 0 0 15px 15px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 

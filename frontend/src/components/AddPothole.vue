@@ -41,13 +41,13 @@
         type="text"
         name="lat"
         label= latitude
-        v-model="pothole.lat">
+        v-model="pothole.lat" readonly>
       </formulate-input>
         <formulate-input
         type="text"
         name="lng"
         label= longitude
-        v-model="pothole.lon">
+        v-model="pothole.lng" readonly>
       </formulate-input>
       <formulate-input
         type="textarea"
@@ -90,8 +90,8 @@ export default {
             severity: ""
             },
             geocodeResponse: {},
-            lat: this.$store.state.addLat,
-            lng: this.$store.state.addLng
+            lat: 0,
+            lng: 0
         }
 
     },
@@ -99,12 +99,12 @@ export default {
     getCoords() {
       //collect coordinates
       navigator.geolocation.getCurrentPosition((loc) => {
-        this.$store.commit('UPDATE_LAT', loc.coords.latitude)
-        this.$store.commit('UPDATE_LNG', loc.coords.longitude)
+        this.pothole.lat = this.$store.commit('UPDATE_LAT', loc.coords.latitude)
+        this.pothole.lng = this.$store.commit('UPDATE_LNG', loc.coords.longitude)
       })  
     },
     reverseGeocode() {
-        neighborhoodService.reverseGeocode(this.pothole.clickedLat, this.pothole.clickedLng)
+        neighborhoodService.reverseGeocode(this.pothole.lat, this.pothole.lng)
         .then((response => {
         this.pothole.neighborhood = response.data.results[0].address_components[2].long_name;
       }))   
@@ -113,8 +113,8 @@ export default {
         neighborhoodService.geocode(this.pothole.address)
         .then((response => {
         this.pothole.neighborhood = response.data.results[0].address_components[2].long_name;
-        this.$store.commit('UPDATE_LAT', response.data.results[0].geometry.location.lat);
-        this.$store.commit('UPDATE_LNG', response.data.results[0].geometry.location.lng);
+        this.pothole.lat = this.$store.commit('UPDATE_LAT', response.data.results[0].geometry.location.lat);
+        this.pothole.lng = this.$store.commit('UPDATE_LNG', response.data.results[0].geometry.location.lng);
 
       }))   
     },

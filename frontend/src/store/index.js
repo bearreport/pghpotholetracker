@@ -58,9 +58,11 @@ export default new Vuex.Store({
     },
     UPDATE_LAT(state, lat) {
       state.addLat = lat;
+      return lat;
     },
     UPDATE_LNG(state, lng) {
       state.addLng = lng;
+      return lng;
     } 
   }
 })
