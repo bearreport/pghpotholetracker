@@ -26,7 +26,7 @@ CREATE TABLE users (
 	CONSTRAINT PK_user PRIMARY KEY (user_id)
 );
 
-CREATE TYPE pothole_status AS ENUM ('uninspected', 'under inspection', 'inspected', 'under repair', 'repaired');
+CREATE TYPE pothole_status AS ENUM ('needs review', 'uninspected', 'under inspection', 'inspected', 'under repair', 'repaired');
 CREATE TYPE pothole_dimensions AS ENUM ('0-1ft', '1-2ft', '2+ft', 'sinkhole');
 CREATE TYPE pothole_severity AS ENUM ('low', 'medium', 'high', 'extreme');
 
@@ -52,14 +52,14 @@ INSERT INTO users (username,password_hash,role) VALUES ('user','$2a$08$UkVvwpULi
 INSERT INTO users (username,password_hash,role) VALUES ('admin','$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_ADMIN');
 INSERT INTO users (username,password_hash,role) VALUES ('employee','$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_EMPLOYEE');
 
-INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.4238', '-79.9779', '123 Blah St.', 'Wilkinsburg', CURRENT_TIMESTAMP, NULL, NULL, 'uninspected', 'medium', '0-1ft', 'no notes');
-INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.424140', '-79.980714', '188 Fake St.', 'Squirrel Hill', CURRENT_TIMESTAMP, NULL, NULL, 'uninspected', 'medium', '1-2ft', 'no notes');
+INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.4238', '-79.9779', '123 Blah St.', 'Wilkinsburg', CURRENT_TIMESTAMP, NULL, NULL, 'needs review', 'medium', '0-1ft', 'no notes');
+INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.424140', '-79.980714', '188 Fake St.', 'Squirrel Hill', CURRENT_TIMESTAMP, NULL, NULL, 'needs review', 'medium', '1-2ft', 'no notes');
 INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.424940', '-79.976356', '333 Unreal St.', 'Bloomfield', CURRENT_TIMESTAMP, '07/27/2021', NULL, 'under inspection', 'high', '2+ft', 'Its real big');
 INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.422735', '-79.980544', '666 Demon St.', 'Wilkinsburg', CURRENT_TIMESTAMP, '01/01/2021', NULL, 'inspected', 'low', '0-1ft', 'no notes');
 INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.426589', '-79.966260', '185 Dunlap St.', 'Shadyside', CURRENT_TIMESTAMP, '03/05/2021', '05/20/2021', 'repaired', 'low', 'sinkhole', 'Bus paved over, never recovered');
 INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.415819', '-79.970449', '88 Colosimo Dr.', 'Bloomfield', CURRENT_TIMESTAMP, '04/20/2021', NULL, 'under repair', 'medium', '0-1ft', 'no notes');
-INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.440439', '-80.000614', '44 Olsen Blvd.', 'Strip District', CURRENT_TIMESTAMP, NULL, NULL, 'uninspected', 'medium', '0-1ft', 'no notes');
-INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.438922', '-79.992072', '837 Street St.', 'Wilkinsburg', CURRENT_TIMESTAMP, NULL, NULL, 'uninspected', 'medium', '0-1ft', 'no notes');
+INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.440439', '-80.000614', '44 Olsen Blvd.', 'Strip District', CURRENT_TIMESTAMP, NULL, NULL, 'needs review', 'medium', '0-1ft', 'no notes');
+INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.438922', '-79.992072', '837 Street St.', 'Wilkinsburg', CURRENT_TIMESTAMP, NULL, NULL, 'needs review', 'medium', '0-1ft', 'no notes');
 INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.446323', '-79.976118', '27 Maplewood Ave.', 'Bloomfield', CURRENT_TIMESTAMP, NULL, NULL, 'uninspected', 'medium', '2+ft', 'no notes');
 INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.438037', '-79.919580', '69 Yeet St.', 'Wilkinsburg', CURRENT_TIMESTAMP, NULL, NULL, 'uninspected', 'medium', '1-2ft', 'Destroyed axle');
 INSERT INTO potholes VALUES(DEFAULT, (SELECT user_id FROM users WHERE user_id = 1), '40.441203', '-79.908760', '68 Car Rd.', 'Shadyside', CURRENT_TIMESTAMP, '08/02/2021', NULL, 'under inspection', 'medium', '0-1ft', 'no notes');
