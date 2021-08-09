@@ -99,7 +99,7 @@
 
 
             <td class="cell-edit">
-              <button v-if="potholesBeingEdited.length == 0" v-on:click="addPotholeToEdited(pothole)">Edit</button>
+              <button class="updateButton editButton" v-if="potholesBeingEdited.length == 0" v-on:click="addPotholeToEdited(pothole)">Edit</button>
               <button class="updateButton xButton" v-if="potholesBeingEdited.includes(pothole)" v-on:click="clearEdited()">X</button>
               <button class="updateButton checkButton" v-if="potholesBeingEdited.includes(pothole)" v-on:click="updatePothole(potholesBeingEdited[0])">✓</button>
             </td>
@@ -109,7 +109,8 @@
       </table>
     </div>
     <div class="button-container">
-    <button v-on:click="deleteSelectedPotholes()">Delete Selected Potholes</button>
+    <button class="bottomButton" v-on:click="deleteSelectedPotholes()">Delete Selected Potholes</button>
+    <button class="bottomButton" v-on:click="flipRepairFilter">{{ repairFilter ? "Unfilter" : "Filter" }} Out Repaired Potholes</button>
     <div>
       <label for="searchRadiusInput">Search Radius (in dec. degrees): </label>
       <input type="number" id="searchRadiusInput" v-model.number="searchRadius" step=".0001">
@@ -129,234 +130,241 @@ export default {
     computed: {
       filteredList() {
         let filteredPotholes = this.$store.state.allPotholes;
-        if (this.sortByField == "") {
-          let idA = 0;
-          let idB = 0;
-          filteredPotholes.sort((a, b) => {
-            if (a.currentStatus == "needs review") {
-              idA = -500
-            } else {
-              idA = a.potholeId;
-            }
-            if (b.currentStatus == "needs review") {
-              idB = -500
-            } else {
-              idB = b.potholeId;
-            }
-            if (idA < idB) {
-              return -1;
-            } else if (idA > idB) {
-              return 1
-            } else {
-              return 0
-            }
-          });
-        } else if (this.sortByField == "ID") {
-          filteredPotholes.sort((a, b) => {
-            let idA = a.potholeId;
-            let idB = b.potholeId;
-            if (idA < idB) {
-              return -1;
-            } else if (idA > idB) {
-              return 1
-            } else {
-              return 0
-            }
-          });
-        }  else if (this.sortByField == "USERID") {
-          filteredPotholes.sort((a, b) => {
-            let idA = a.submitterId;
-            let idB = b.submitterId;
-            if (idA < idB) {
-              return -1;
-            } else if (idA > idB) {
-              return 1
-            } else {
-              return 0
-            }
-          });
-        } else if (this.sortByField == "LAT") {
-          filteredPotholes.sort((a, b) => {
-            let idA = a.lat;
-            let idB = b.lat;
-            if (idA < idB) {
-              return -1;
-            } else if (idA > idB) {
-              return 1
-            } else {
-              return 0
-            }
-          });
-        } else if (this.sortByField == "LON") {
-          filteredPotholes.sort((a, b) => {
-            let idA = a.lon;
-            let idB = b.lon;
-            if (idA < idB) {
-              return -1;
-            } else if (idA > idB) {
-              return 1
-            } else {
-              return 0
-            }
-          });
-        } else if (this.sortByField == "ADDR") {
-          filteredPotholes.sort((a, b) => {
-            let idA = a.addr;
-            let idB = b.addr;
-            if (idA < idB) {
-              return -1;
-            } else if (idA > idB) {
-              return 1
-            } else {
-              return 0
-            }
-          });
-        } else if (this.sortByField == "NEIGHBORHOOD") {
-          filteredPotholes.sort((a, b) => {
-            let idA = a.neighborhood;
-            let idB = b.neighborhood;
-            if (idA < idB) {
-              return -1;
-            } else if (idA > idB) {
-              return 1
-            } else {
-              return 0
-            }
-          });
-        } else if (this.sortByField == "CREATE") {
-          filteredPotholes.sort((a, b) => {
-            let idA = a.dateCreated;
-            let idB = b.dateCreated;
-            if (idA < idB) {
-              return -1;
-            } else if (idA > idB) {
-              return 1
-            } else {
-              return 0
-            }
-          });
-        } else if (this.sortByField == "INSPECT") {
-          filteredPotholes.sort((a, b) => {
-            let idA = (a.dateInspected) ? "" : "" + a.dateInspected;
-            let idB = (b.dateInspected) ? "" : "" + b.dateInspected;
-            if (idA < idB) {
-              return -1;
-            } else if (idA > idB) {
-              return 1
-            } else {
-              return 0
-            }
-          });
-        } else if (this.sortByField == "REPAIR") {
-          filteredPotholes.sort((a, b) => {
-            let idA = (a.dateRepaired) ? "" : "" + a.dateRepaired;
-            let idB = (b.dateRepaired) ? "" : "" + b.dateRepaired;
-            if (idA < idB) {
-              return -1;
-            } else if (idA > idB) {
-              return 1
-            } else {
-              return 0
-            }
-          });
-        } else if (this.sortByField == "STATUS") {
-          let idA = 0;
-          let idB = 0;
-          filteredPotholes.sort((a, b) => {
-            if (a.currentStatus == "needs review") {
-              idA = 0;
-            } else if (a.currentStatus == "uninspected") {
-              idA = 1;
-            } else if (a.currentStatus == "under inspection") {
-              idA = 2;
-            } else if (a.currentStatus == "inspected") {
-              idA = 3;
-            } else if (a.currentStatus == "under repair") {
-              idA = 4;
-            } else if (a.currentStatus == "repaired") {
-              idA = 5;
-            }
-            if (b.currentStatus == "needs review") {
-              idB = 0;
-            } else if (b.currentStatus == "uninspected") {
-              idB = 1;
-            } else if (b.currentStatus == "under inspection") {
-              idB = 2;
-            } else if (b.currentStatus == "inspected") {
-              idB = 3;
-            } else if (b.currentStatus == "under repair") {
-              idB = 4;
-            } else if (b.currentStatus == "repaired") {
-              idB = 5;
-            }
-            if (idA < idB) {
-              return -1;
-            } else if (idA > idB) {
-              return 1
-            } else {
-              return 0
-            }
-          });
-        } else if (this.sortByField == "SEVERITY") {
-          let idA = 0;
-          let idB = 0;
-          filteredPotholes.sort((a, b) => {
-            if (a.severity == "low") {
-              idA = 3;
-            } else if (a.severity == "medium") {
-              idA = 2;
-            } else if (a.severity == "high") {
-              idA = 1;
-            } else if (a.severity == "extreme") {
-              idA = 0;
-            }
-            if (b.severity == "low") {
-              idB = 3;
-            } else if (b.severity == "medium") {
-              idB = 2;
-            } else if (b.severity == "high") {
-              idB = 1;
-            } else if (b.severity == "extreme") {
-              idB = 0;
-            }
-            if (idA < idB) {
-              return -1;
-            } else if (idA > idB) {
-              return 1
-            } else {
-              return 0
-            }
-          });
-        } else if (this.sortByField == "SIZE") {
-          let idA = 0;
-          let idB = 0;
-          filteredPotholes.sort((a, b) => {
-            if (a.dimensions == "0-1ft") {
-              idA = 3;
-            } else if (a.dimensions == "1-2ft") {
-              idA = 2;
-            } else if (a.dimensions == "2+ft") {
-              idA = 1;
-            } else if (a.dimensions == "sinkhole") {
-              idA = 0;
-            }
-            if (b.dimensions == "0-1ft") {
-              idB = 3;
-            } else if (b.dimensions == "1-2ft") {
-              idB = 2;
-            } else if (b.dimensions == "2+ft") {
-              idB = 1;
-            } else if (b.dimensions == "sinkhole") {
-              idB = 0;
-            }
-            if (idA < idB) {
-              return -1;
-            } else if (idA > idB) {
-              return 1
-            } else {
-              return 0
-            }
-          });
+        if (this.repairFilter == true) {
+          filteredPotholes = filteredPotholes.filter((pothole) => {
+            return pothole.currentStatus != "repaired"
+          })
+        }
+        if (this.potholesBeingEdited.length == 0) {
+          if (this.sortByField == "") {
+            let idA = 0;
+            let idB = 0;
+            filteredPotholes.sort((a, b) => {
+              if (a.currentStatus == "needs review") {
+                idA = -500
+              } else {
+                idA = a.potholeId;
+              }
+              if (b.currentStatus == "needs review") {
+                idB = -500
+              } else {
+                idB = b.potholeId;
+              }
+              if (idA < idB) {
+                return -1;
+              } else if (idA > idB) {
+                return 1
+              } else {
+                return 0
+              }
+            });
+          } else if (this.sortByField == "ID") {
+            filteredPotholes.sort((a, b) => {
+              let idA = a.potholeId;
+              let idB = b.potholeId;
+              if (idA < idB) {
+                return -1;
+              } else if (idA > idB) {
+                return 1
+              } else {
+                return 0
+              }
+            });
+          } else if (this.sortByField == "USERID") {
+            filteredPotholes.sort((a, b) => {
+              let idA = a.submitterId;
+              let idB = b.submitterId;
+              if (idA < idB) {
+                return -1;
+              } else if (idA > idB) {
+                return 1
+              } else {
+                return 0
+              }
+            });
+          } else if (this.sortByField == "LAT") {
+            filteredPotholes.sort((a, b) => {
+              let idA = a.lat;
+              let idB = b.lat;
+              if (idA < idB) {
+                return -1;
+              } else if (idA > idB) {
+                return 1
+              } else {
+                return 0
+              }
+            });
+          } else if (this.sortByField == "LON") {
+            filteredPotholes.sort((a, b) => {
+              let idA = a.lon;
+              let idB = b.lon;
+              if (idA < idB) {
+                return -1;
+              } else if (idA > idB) {
+                return 1
+              } else {
+                return 0
+              }
+            });
+          } else if (this.sortByField == "ADDR") {
+            filteredPotholes.sort((a, b) => {
+              let idA = a.addr;
+              let idB = b.addr;
+              if (idA < idB) {
+                return -1;
+              } else if (idA > idB) {
+                return 1
+              } else {
+                return 0
+              }
+            });
+          } else if (this.sortByField == "NEIGHBORHOOD") {
+            filteredPotholes.sort((a, b) => {
+              let idA = a.neighborhood;
+              let idB = b.neighborhood;
+              if (idA < idB) {
+                return -1;
+              } else if (idA > idB) {
+                return 1
+              } else {
+                return 0
+              }
+            });
+          } else if (this.sortByField == "CREATE") {
+            filteredPotholes.sort((a, b) => {
+              let idA = a.dateCreated;
+              let idB = b.dateCreated;
+              if (idA < idB) {
+                return -1;
+              } else if (idA > idB) {
+                return 1
+              } else {
+                return 0
+              }
+            });
+          } else if (this.sortByField == "INSPECT") {
+            filteredPotholes.sort((a, b) => {
+              let idA = (a.dateInspected) ? "" : "" + a.dateInspected;
+              let idB = (b.dateInspected) ? "" : "" + b.dateInspected;
+              if (idA < idB) {
+                return -1;
+              } else if (idA > idB) {
+                return 1
+              } else {
+                return 0
+              }
+            });
+          } else if (this.sortByField == "REPAIR") {
+            filteredPotholes.sort((a, b) => {
+              let idA = (a.dateRepaired) ? "" : "" + a.dateRepaired;
+              let idB = (b.dateRepaired) ? "" : "" + b.dateRepaired;
+              if (idA < idB) {
+                return -1;
+              } else if (idA > idB) {
+                return 1
+              } else {
+                return 0
+              }
+            });
+          } else if (this.sortByField == "STATUS") {
+            let idA = 0;
+            let idB = 0;
+            filteredPotholes.sort((a, b) => {
+              if (a.currentStatus == "needs review") {
+                idA = 0;
+              } else if (a.currentStatus == "uninspected") {
+                idA = 1;
+              } else if (a.currentStatus == "under inspection") {
+                idA = 2;
+              } else if (a.currentStatus == "inspected") {
+                idA = 3;
+              } else if (a.currentStatus == "under repair") {
+                idA = 4;
+              } else if (a.currentStatus == "repaired") {
+                idA = 5;
+              }
+              if (b.currentStatus == "needs review") {
+                idB = 0;
+              } else if (b.currentStatus == "uninspected") {
+                idB = 1;
+              } else if (b.currentStatus == "under inspection") {
+                idB = 2;
+              } else if (b.currentStatus == "inspected") {
+                idB = 3;
+              } else if (b.currentStatus == "under repair") {
+                idB = 4;
+              } else if (b.currentStatus == "repaired") {
+                idB = 5;
+              }
+              if (idA < idB) {
+                return -1;
+              } else if (idA > idB) {
+                return 1
+              } else {
+                return 0
+              }
+            });
+          } else if (this.sortByField == "SEVERITY") {
+            let idA = 0;
+            let idB = 0;
+            filteredPotholes.sort((a, b) => {
+              if (a.severity == "low") {
+                idA = 3;
+              } else if (a.severity == "medium") {
+                idA = 2;
+              } else if (a.severity == "high") {
+                idA = 1;
+              } else if (a.severity == "extreme") {
+                idA = 0;
+              }
+              if (b.severity == "low") {
+                idB = 3;
+              } else if (b.severity == "medium") {
+                idB = 2;
+              } else if (b.severity == "high") {
+                idB = 1;
+              } else if (b.severity == "extreme") {
+                idB = 0;
+              }
+              if (idA < idB) {
+                return -1;
+              } else if (idA > idB) {
+                return 1
+              } else {
+                return 0
+              }
+            });
+          } else if (this.sortByField == "SIZE") {
+            let idA = 0;
+            let idB = 0;
+            filteredPotholes.sort((a, b) => {
+              if (a.dimensions == "0-1ft") {
+                idA = 3;
+              } else if (a.dimensions == "1-2ft") {
+                idA = 2;
+              } else if (a.dimensions == "2+ft") {
+                idA = 1;
+              } else if (a.dimensions == "sinkhole") {
+                idA = 0;
+              }
+              if (b.dimensions == "0-1ft") {
+                idB = 3;
+              } else if (b.dimensions == "1-2ft") {
+                idB = 2;
+              } else if (b.dimensions == "2+ft") {
+                idB = 1;
+              } else if (b.dimensions == "sinkhole") {
+                idB = 0;
+              }
+              if (idA < idB) {
+                return -1;
+              } else if (idA > idB) {
+                return 1
+              } else {
+                return 0
+              }
+            });
+          }
         }
         return filteredPotholes;
       }
@@ -367,6 +375,7 @@ export default {
         errorMsg: "",
         potholesBeingEdited: [],
         sortByField: "",
+        repairFilter: false,
         searchRadius: .0003
       }
     },
@@ -398,6 +407,9 @@ export default {
       },
       setSortField(string) {
         this.sortByField = string;
+      },
+      flipRepairFilter() {
+        this.repairFilter = !this.repairFilter;
       },
       addPotholeToEdited(pothole) {
         if (!this.potholesBeingEdited.includes(pothole)) {
@@ -499,7 +511,7 @@ export default {
 }
 #table-container {
   overflow-y: scroll;
-  height: 500px;
+  height: 400px;
   max-height: 500px;
   margin-top: 20px;
 }
@@ -570,13 +582,31 @@ input, select {
   height: 70%;
 }
 .updateButton {
-  width: 30px;
+  width: 100%;
+  height: 50%;
+  border: none;
+  display: inline;
+  border-radius: 5px;
+  font-weight: bold;
 }
 .xButton {
   background-color: red;
 }
 .checkButton {
-  background-color: greenyellow;
+  background-color: rgb(44, 221, 0);
+}
+.editButton {
+  background-color: rgb(0, 95, 150);
+  color: white;
+}
+.bottomButton {
+  height: 30px;
+  border: none;
+  display: inline;
+  border-radius: 5px;
+  font-weight: bold;
+  background-color: #025252;
+  color: white;
 }
 .cell-id {
   width: 2%;
@@ -604,6 +634,7 @@ input, select {
 .cell-edit {
   width: 3%;
   text-align: center;
+  vertical-align: middle;
 }
 .button-container {
   margin-top: 5px;

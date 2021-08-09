@@ -19,6 +19,9 @@ export default {
   components: {
     MapSidebar,
     MapModule
+  },
+  created() {
+    this.$store.state.mapHeight.height = "750px"
   }
 }
 </script>
@@ -26,6 +29,7 @@ export default {
 <style>
 .map-content {
   flex-grow: 3;
+  padding-left: 10px;
 }
 
 </style>

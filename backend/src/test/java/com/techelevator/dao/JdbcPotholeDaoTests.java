@@ -1,5 +1,6 @@
 package com.techelevator.dao;
 
+import com.techelevator.exception.UserDoesNotOwnPotholeException;
 import com.techelevator.model.Pothole;
 import org.junit.Assert;
 import org.junit.Before;
@@ -84,7 +85,7 @@ public class JdbcPotholeDaoTests extends FinalCapstoneDaoTests {
     }
 
     @Test
-    public void deletePotholeBasic_deleted_pothole_cant_be_retrieved() {
+    public void deletePotholeBasic_deleted_pothole_cant_be_retrieved() throws UserDoesNotOwnPotholeException {
         sut.deletePotholeBasic(98, "employee");
 
         Pothole pothole = sut.getPotholeById(98);

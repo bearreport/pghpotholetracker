@@ -22,6 +22,9 @@ export default new Vuex.Store({
     user: currentUser || {},
     currentMarker: {},
     allPotholes: [],
+    mapHeight: {
+      height: "300px"
+    }
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {

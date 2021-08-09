@@ -2,7 +2,7 @@
   <div id="app">
     <div id="nav">
       <h3 id="page-title">PITTSBURGH POTHOLE TRACKER</h3>
-      <div>
+      <div id="links">
       <router-link v-bind:to="{ name: 'home' }">Home</router-link>
       <span class="pipe">   |   </span>
       <router-link v-bind:to="{ name: 'map' }">Map</router-link>
@@ -11,8 +11,10 @@
       <span class="pipe" v-if="checkRole" >   |  </span>
       <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
       </div>
-      <span v-if="$store.state.token == ''">You are not currently logged in.</span>
-      <span v-if="$store.state.token != ''">You are currently logged in as: {{ this.$store.state.user.authorities[0].name.substring(5) }}</span>
+      <div id="role-checker">
+        <span v-if="$store.state.token == ''">You are not currently logged in.</span>
+        <span v-if="$store.state.token != ''">You are currently logged in as: {{ this.$store.state.user.authorities[0].name.substring(5) }}</span>
+      </div>
     </div>
     <router-view />
   </div>
@@ -77,8 +79,14 @@ body {
   font-weight: bolder;
   font-family: 'Staatliches', sans-serif;
   font-size: 2vw;
+  flex-basis: 100%;
 }
-
+#role-checker {
+  flex-basis: 100%;
+}
+#links {
+  flex-basis: 100%;
+}
 
 </style>
 
