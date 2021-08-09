@@ -71,6 +71,19 @@ public class JdbcPotholeDaoTests extends FinalCapstoneDaoTests {
         assertPotholesMatch("createPothole returned pothole with wrong or partial data", testPothole, createdPothole);
     }
 
+<<<<<<< HEAD
+   /* @Test
+    public void deleted_pothole_cant_be_retrieved() {
+        sut.deletePothole(98, "employee");
+
+        Pothole pothole = sut.getPotholeById(98);
+        Assert.assertNull("deleteProject failed to remove project from database", pothole);
+
+        List<Pothole> potholes = sut.getAllPotholes();
+        Assert.assertEquals("deletePothole left too many potholes in database", 1, potholes.size());
+        assertPotholesMatch("deletePothole deleted wrong pothole", POTHOLE_1, potholes.get(0));
+    }*/
+=======
 //    @Test
 //    public void deleted_pothole_cant_be_retrieved() {
 //        sut.deletePothole(98, "employee");
@@ -82,6 +95,7 @@ public class JdbcPotholeDaoTests extends FinalCapstoneDaoTests {
 //        Assert.assertEquals("deletePothole left too many potholes in database", 1, potholes.size());
 //        assertPotholesMatch("deletePothole deleted wrong pothole", POTHOLE_1, potholes.get(0));
 //    }
+>>>>>>> 524031721397d6dca4b8c647ed49b4315002996a
 
 
 }
