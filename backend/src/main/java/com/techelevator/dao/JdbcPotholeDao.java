@@ -1,6 +1,7 @@
 package com.techelevator.dao;
 
 import com.techelevator.PotholeNotFoundException;
+import com.techelevator.exception.UserDoesNotOwnPotholeException;
 import com.techelevator.model.Pothole;
 import com.techelevator.model.User;
 import org.springframework.dao.DataAccessException;
@@ -245,7 +246,7 @@ public class JdbcPotholeDao implements PotholeDao{
     }
 
     @Override
-    public boolean deletePotholeBasic(int potholeId, String userName) {
+    public boolean deletePotholeBasic(int potholeId, String userName) throws UserDoesNotOwnPotholeException {
         String userNameSql = "SELECT user_id FROM users WHERE username = ?";
         SqlRowSet userResults = jdbcTemplate.queryForRowSet(userNameSql, userName);
         int userId = -1;
@@ -258,13 +259,11 @@ public class JdbcPotholeDao implements PotholeDao{
         int submitterId = -1;
         if(submitterResults.next()){
             submitterId = submitterResults.getInt("submitter_id");
-
         }
 
         if (userId == -1 || submitterId == -1 || userId != submitterId){
-            return false;
+            throw new UserDoesNotOwnPotholeException();
         } else {
-
             String sql = "DELETE FROM potholes WHERE pothole_id = ?;";
             return jdbcTemplate.update(sql, potholeId) == 1;
         }

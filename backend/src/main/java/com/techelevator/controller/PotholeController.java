@@ -3,6 +3,7 @@ package com.techelevator.controller;
 import com.techelevator.PotholeNotFoundException;
 import com.techelevator.dao.JdbcPotholeDao;
 import com.techelevator.dao.PotholeDao;
+import com.techelevator.exception.UserDoesNotOwnPotholeException;
 import com.techelevator.model.Pothole;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -83,7 +84,7 @@ public class PotholeController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-    public boolean deletePotholeBasic(@PathVariable int id, Principal principal) throws PotholeNotFoundException {
+    public boolean deletePotholeBasic(@PathVariable int id, Principal principal) throws PotholeNotFoundException, UserDoesNotOwnPotholeException {
         return potholeDao.deletePotholeBasic(id, principal.getName());
     }
 
