@@ -3,6 +3,9 @@
     <h1>Home</h1>
     <p>You must be authenticated to see this</p>
     <dashboard/>
+   <div class="paragraph">
+  <p class="lorem"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, odit, tempora non nulla error quam magnam ipsa dolorem eos excepturi fugiat explicabo tempore ea temporibus voluptatibus. Ea inventore enim Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestias voluptas exercitationem fugiat eum similique saepe odit sunt enim sapiente, quos vitae? Cumque fugiat numquam corrupti nostrum deleniti amet sit sint.</p>
+</div>
 </div>
 </template>
 
@@ -10,7 +13,7 @@
 import Dashboard from '../components/Dashboard.vue';
 
 export default {
-  components: { Dashboard },
+  components: {Dashboard},
   name: "home"
 };
 </script>
@@ -53,4 +56,10 @@ font-size: 15px;
 
   .dropdown-content a:hover {background-color: #ddd}
   .show {display:block;}
+
+  .paragraph {
+     column-count: 2;
+    column-gap: 20px;
+  }
+ 
 </style>

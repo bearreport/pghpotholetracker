@@ -1,4 +1,6 @@
 <template>
+<div>
+
   <div class="dashboard">
       <h1>Dashboard</h1>
       <ul id="dashboard-list">
@@ -12,8 +14,9 @@
       <ol>
       <li class="neighborhood"> {{potholesPerNeighborhood.neighborhood}} : {{potholesPerNeighborhood.occurrence}}</li>
       </ol>
-
   </div>
+  </div>
+  
 </template>
 
 <script>
@@ -98,6 +101,7 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   text-align: center;
   padding: 0 12px;
+  margin: 0%;
 }
 #dashboard-list {
     text-align: left;
@@ -107,4 +111,6 @@ export default {
     text-align: left;
     padding-bottom: 15px;
 }
+
+
 </style>

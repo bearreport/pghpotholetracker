@@ -166,7 +166,7 @@ public class JdbcPotholeDao implements PotholeDao{
                 "CURRENT_TIMESTAMP, " + // date_created
                 "NULL, " + // date_inspected
                 "NULL, " + // date_repaired
-                "'uninspected'::pothole_status, " + // current_status
+                "'needs review'::pothole_status, " + // current_status
                 "NULL, " + // severity (needs ::pothole_severity to be cast correctly)
                 "?::pothole_dimensions, " + // dimensions
                 "?) RETURNING pothole_id";
