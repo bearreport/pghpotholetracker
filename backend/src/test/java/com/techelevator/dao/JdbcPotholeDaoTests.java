@@ -72,8 +72,20 @@ public class JdbcPotholeDaoTests extends FinalCapstoneDaoTests {
     }
 
     @Test
-    public void deleted_pothole_cant_be_retrieved() {
-        sut.deletePothole(98, "employee");
+    public void deletePotholeFull_deleted_pothole_cant_be_retrieved() {
+        sut.deletePotholeFull(98);
+
+        Pothole pothole = sut.getPotholeById(98);
+        Assert.assertNull("deleteProject failed to remove project from database", pothole);
+
+        List<Pothole> potholes = sut.getAllPotholes();
+        Assert.assertEquals("deletePothole left too many potholes in database", 1, potholes.size());
+        assertPotholesMatch("deletePothole deleted wrong pothole", POTHOLE_1, potholes.get(0));
+    }
+
+    @Test
+    public void deletePotholeBasic_deleted_pothole_cant_be_retrieved() {
+        sut.deletePotholeBasic(98, "employee");
 
         Pothole pothole = sut.getPotholeById(98);
         Assert.assertNull("deleteProject failed to remove project from database", pothole);
