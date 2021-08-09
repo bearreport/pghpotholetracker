@@ -41,13 +41,13 @@
         type="text"
         name="lat"
         label= latitude
-        v-model="pothole.lat">
+        v-model="pothole.lat" readonly>
       </formulate-input>
         <formulate-input
         type="text"
         name="lng"
         label= longitude
-        v-model="pothole.lon">
+        v-model="pothole.lon" readonly>
       </formulate-input>
       <formulate-input
         type="textarea"
@@ -101,10 +101,11 @@ export default {
       navigator.geolocation.getCurrentPosition((loc) => {
         this.pothole.lat = loc.coords.latitude;
         this.pothole.lon = loc.coords.longitude;
+        this.reverseGeocode(this.pothole.lat, this.pothole.lon);
       })  
     },
     reverseGeocode() {
-        neighborhoodService.reverseGeocode(this.pothole.lat, this.pothole.long)
+        neighborhoodService.reverseGeocode(this.pothole.lat, this.pothole.lon)
         .then((response => {
         this.pothole.neighborhood = response.data.results[0].address_components[2].long_name;
       }))   
@@ -112,11 +113,11 @@ export default {
      geocode() {
         neighborhoodService.geocode(this.pothole.address)
         .then((response => {
+        console.log("1");
         this.pothole.neighborhood = response.data.results[0].address_components[2].long_name;
         this.pothole.lat = response.data.results[0].geometry.location.lat;
         this.pothole.lon = response.data.results[0].geometry.location.lng;
-
-      }))   
+        }))   
     },
     
     submitHandler() {

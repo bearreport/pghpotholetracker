@@ -104,13 +104,14 @@ export default {
         });
     this.map.addObject(marker);
   },
-  setUpClickListener(map) {
-      map.addEventListener('tap', function (evt) {
+    setUpClickListener(map) {
+      map.addEventListener('tap', (evt) => {
       let coord = map.screenToGeo(evt.currentPointer.viewportX,
-            evt.currentPointer.viewportY);
-                console.log("Clicked at:" + coord.lat.toFixed(4) + " and " + coord.lng.toFixed(4));})
-            ;
-
+        evt.currentPointer.viewportY);
+      console.log("Clicked at:" + coord.lat.toFixed(6) + " and " + coord.lng.toFixed(6));
+      this.$store.commit("UPDATE_LAT", coord.lat.toFixed(6));
+      this.$store.commit("UPDATE_LNG", coord.lng.toFixed(6));
+      });
   }
 
    
