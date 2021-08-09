@@ -22,6 +22,8 @@ export default new Vuex.Store({
     user: currentUser || {},
     currentMarker: {},
     allPotholes: [],
+    addLat: 0,
+    addLng: 0
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {
@@ -53,6 +55,12 @@ export default new Vuex.Store({
         return pothole.potholeId !== potholeForChange.potholeId;
       })
       state.allPotholes.push(potholeForChange);
-    }
+    },
+    UPDATE_LAT(state, lat) {
+      state.addLat = lat;
+    },
+    UPDATE_LNG(state, lng) {
+      state.addLng = lng;
+    } 
   }
 })

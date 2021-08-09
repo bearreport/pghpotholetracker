@@ -90,8 +90,8 @@ export default {
             severity: ""
             },
             geocodeResponse: {},
-            clickedLat: 0,
-            clickedLng: 0
+            lat: this.$store.state.addLat,
+            lng: this.$store.state.addLng
         }
 
     },
@@ -99,12 +99,12 @@ export default {
     getCoords() {
       //collect coordinates
       navigator.geolocation.getCurrentPosition((loc) => {
-        this.pothole.lat = loc.coords.latitude;
-        this.pothole.lon = loc.coords.longitude;
+        this.$store.commit('UPDATE_LAT', loc.coords.latitude)
+        this.$store.commit('UPDATE_LNG', loc.coords.longitude)
       })  
     },
     reverseGeocode() {
-        neighborhoodService.reverseGeocode(this.pothole.lat, this.pothole.long)
+        neighborhoodService.reverseGeocode(this.pothole.clickedLat, this.pothole.clickedLng)
         .then((response => {
         this.pothole.neighborhood = response.data.results[0].address_components[2].long_name;
       }))   
@@ -113,8 +113,8 @@ export default {
         neighborhoodService.geocode(this.pothole.address)
         .then((response => {
         this.pothole.neighborhood = response.data.results[0].address_components[2].long_name;
-        this.pothole.lat = response.data.results[0].geometry.location.lat;
-        this.pothole.lon = response.data.results[0].geometry.location.lng;
+        this.$store.commit('UPDATE_LAT', response.data.results[0].geometry.location.lat);
+        this.$store.commit('UPDATE_LNG', response.data.results[0].geometry.location.lng);
 
       }))   
     },
