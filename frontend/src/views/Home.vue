@@ -34,7 +34,7 @@ export default {
   padding-top: 10px;
   border-radius: 25px;
   width: 300px;
-  height: 400px;
+  height: 525px;
   align-content: center;
 }
 .form-signin{
