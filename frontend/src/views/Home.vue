@@ -77,5 +77,6 @@ font-size: 15px;
  .lorem {
    column-count: 2;
    column-gap: 8px;
+   color: rgba(2,82,82, .9);
  }
 </style>
