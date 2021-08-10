@@ -1,7 +1,14 @@
 <template>
-<div>
-  <list/>
-  <map-module />
+<div id="list-container">
+
+  <div id="list-map">
+    <map-module />
+  </div>
+
+  <div id="list-list">
+    <list/>
+  </div>
+
 </div>
 </template>
 
@@ -15,9 +22,16 @@ export default {
         List,
         MapModule
     },
+  created() {
+    this.$store.state.mapHeight.height = "360px"
+  }
 }
 </script>
 
 <style>
-
+#list-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 </style>

@@ -35,7 +35,7 @@ public class PotholeController {
     public List<Pothole> getPotholesByParameter(
             @RequestParam(defaultValue = "0") Long userId,
             @RequestParam(defaultValue = "") String neighborhood,
-            @RequestParam(required = false) LocalDate dateCreated,
+            @RequestParam(required = false) String date_created,
             @RequestParam(defaultValue = "") String dimension,
             @RequestParam(defaultValue = "") String status,
             @RequestParam(defaultValue = "") String severity
@@ -47,8 +47,8 @@ public class PotholeController {
         if (!neighborhood.equals("")) {
             return potholeDao.getPotholesByNeighborhood(neighborhood);
         }
-        if (dateCreated != null) {
-            return potholeDao.getPotholesByDateCreated(dateCreated);
+        if (date_created != null) {
+            return potholeDao.getPotholesByDateCreated(LocalDate.parse(date_created));
         }
         if (!dimension.equals("")) {
             return potholeDao.getPotholesByDimension(dimension);

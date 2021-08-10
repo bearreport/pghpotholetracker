@@ -1,12 +1,12 @@
 <!-- find tutorial code here https://developer.here.com/tutorials/how-to-implement-a-web-map-using-vuejs/-->
 
 <template>
-  <div id="map">
+  <div id="map" v-bind:style="this.$store.state.mapHeight">
   <!--In the following div the HERE Map will render-->
     <div id="mapContainer" style="height:100%;width:100%" ref="hereMap"></div>
-    <button @click.prevent="getCoords">get coords</button>
+    <!-- <button @click.prevent="getCoords">get coords</button>
     <button @click.prevent="reverseGeocode">reverseGeocode</button>
-    <div>lat: {{this.lat}}, long: {{this.long}} </div>
+    <div>lat: {{this.lat}}, long: {{this.long}} </div> -->
   </div>
 
 </template>
@@ -44,7 +44,7 @@ export default {
   async mounted() {
     this.initializeHereMap();
     this.getCoords();
-  
+
 
   },
   methods: {
@@ -62,7 +62,7 @@ export default {
       });
       //add event listeners for reshaping the viewport and marker dragging
       addEventListener("resize", () => this.map.getViewPort().resize());
-      
+            
 
       // add behavior control
       new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
@@ -120,11 +120,9 @@ export default {
 
 <style scoped>
 #map {
-  /* width: 60vw; */
-  flex-grow: 3;
   min-width: 360px;
   text-align: center;
-  margin: 0 20px;
   background-color: #ccc;
+  margin: 0 auto;
 }
 </style>
