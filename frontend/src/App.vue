@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
+      <img id="ppt-logo" src="./img/PPT-Logo-Crop.png" alt="Pittsburgh Pothole Tracker Logo">
       <h3 id="page-title">PITTSBURGH POTHOLE TRACKER</h3>
       <div id="links">
       <router-link v-bind:to="{ name: 'home' }">Home</router-link>
@@ -87,7 +88,13 @@ body {
 #links {
   flex-basis: 100%;
 }
-
+#branding {
+  display: flex;
+}
+#ppt-logo {
+  width: auto;
+  height: 50px;
+}
 </style>
 
 
