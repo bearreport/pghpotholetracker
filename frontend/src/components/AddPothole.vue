@@ -49,7 +49,7 @@
         label= longitude
         v-model="pothole.lon" readonly>
       </formulate-input>
-      <formulate-input
+      <formulate-input 
         type="textarea"
         label="Notes"
         validation="max:250,length"
@@ -59,11 +59,13 @@
 
     </fieldset>
 
-    <formulate-input
+
+  </formulate-form>
+      <button @click="submitHandler()"
       type="submit"
       label="Submit"
-    ></formulate-input>
-  </formulate-form>
+    >Submit!</button>
+    <br>
     <button @click.prevent="getCoords">Add GPS Coordinates of your current position to your submission</button>
     <button @click.prevent="geocode">Add GPS Coordinates of address to your submission</button>
 
@@ -72,6 +74,8 @@
 
 <script>
 import neighborhoodService from '../services/NeighborhoodService'
+import potholeService from '../services/PotholeService'
+
 export default {
     data() {
         return {
@@ -81,7 +85,7 @@ export default {
             lon: "",
             address: "",
             neighborhood: "",
-            dateCreated: new Date().toLocaleString(),
+            dateCreated: null,
             currentStatus: "uninspected",
             dimensions: "",
             notes: "",
@@ -90,8 +94,6 @@ export default {
             severity: ""
             },
             geocodeResponse: {},
-            clickedLat: 0,
-            clickedLng: 0
         }
 
     },
@@ -121,8 +123,14 @@ export default {
     },
     
     submitHandler() {
-        //fire off object + credentials to API
-        //handle necessary geocoding to grab coordinates from the address
+        potholeService.addPothole(this.pothole)
+        .then((response => {
+          if (response.status != 200) {
+            alert ("Error adding pothole!")
+          } else {
+            alert("Pothole added!");
+          }
+        }))
 
     }
     }

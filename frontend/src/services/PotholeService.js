@@ -15,6 +15,11 @@ export default {
     deletePotholeByIdFull(potholeId) {
         const string = `/potholes/employee/${potholeId}`;
         return axios.delete(string);
+    },
+
+    addPothole(pothole) {
+        const string = "/potholes";
+        return axios.post(string, pothole);
     }
 
 }
