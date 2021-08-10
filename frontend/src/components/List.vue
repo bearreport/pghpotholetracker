@@ -662,4 +662,10 @@ input, select {
   width: 55px;
   margin: 0 20px;
 }
+@media only screen and (max-width: 1456px) {
+  #tblPotholes {
+    font-size: 15px;
+    width: 230%;
+  }
+}
 </style>
