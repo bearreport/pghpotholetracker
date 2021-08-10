@@ -29,12 +29,12 @@ export default {
   background-color: rgba(2,82,82, .9);
   
   margin: auto;
-  margin-top: 10%;
+  margin-top: 100px;
   padding-bottom: 50px;
   padding-top: 10px;
   border-radius: 25px;
-  width: 20%;
-  height: auto;
+  width: 300px;
+  height: 400px;
   align-content: center;
 }
 .form-signin{
@@ -44,6 +44,7 @@ export default {
 }
 #username{
 font-size: 15px;
+
 }
 #password{
   font-size: 15px;
@@ -54,6 +55,7 @@ font-size: 15px;
 }
 #form-control{
   opacity: 100%;
+  
 }
 
   .dropdown-content a:hover {background-color: #ddd}

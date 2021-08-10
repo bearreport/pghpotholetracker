@@ -84,6 +84,9 @@ export default {
 </script>
 
 <style>
+.grid-itemB{
+  width: 250px;
+}
 #username{
   width: 175px;
 }
