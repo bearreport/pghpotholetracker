@@ -8,7 +8,7 @@
       <formulate-input
         name="address"
         label="Address"
-        v-model="pothole.address"
+        v-model="pothole.addr"
         validation="required"
       ></formulate-input>
       <formulate-input
@@ -24,7 +24,7 @@
             { value: 'sinkhole', label: 'sinkhole'}
         ]"
       ></formulate-input>
-       <formulate-input
+     <!--  <formulate-input
         type="select"
         name="severity"
         label="Pothole Severity"
@@ -35,8 +35,8 @@
             { value: 'medium', label: 'medium'},
             { value: 'high', label: 'high'},
             { value: 'extreme', label: 'extreme'}
-        ]"
-      ></formulate-input>
+        ]" 
+      ></formulate-input> -->
       <formulate-input
         type="text"
         name="lat"
@@ -80,18 +80,12 @@ export default {
     data() {
         return {
             pothole: {
-            submitterId: 0,
             lat: "",
             lon: "",
-            address: "",
+            addr: "",
             neighborhood: "",
-            dateCreated: null,
-            currentStatus: "uninspected",
             dimensions: "",
             notes: "",
-            dateInspected: null,
-            dateRepaired: null,
-            severity: ""
             },
             geocodeResponse: {},
         }
@@ -115,7 +109,6 @@ export default {
      geocode() {
         neighborhoodService.geocode(this.pothole.address)
         .then((response => {
-        console.log("1");
         this.pothole.neighborhood = response.data.results[0].address_components[2].long_name;
         this.pothole.lat = response.data.results[0].geometry.location.lat;
         this.pothole.lon = response.data.results[0].geometry.location.lng;

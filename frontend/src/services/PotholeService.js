@@ -18,7 +18,7 @@ export default {
     },
 
     addPothole(pothole) {
-        const string = "/potholes";
+        const string = "/potholes/";
         return axios.post(string, pothole);
     }
 

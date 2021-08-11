@@ -6,6 +6,8 @@
       <div id="links">
       <router-link v-bind:to="{ name: 'home' }">Home</router-link>
       <span class="pipe">   |   </span>
+      <router-link v-bind:to="{ name: 'addPothole' }">Report Pothole</router-link>
+      <span class="pipe">   |   </span>
       <router-link v-bind:to="{ name: 'map' }">Map</router-link>
       <span class="pipe" v-if="$store.state.token != ''">   |   </span>
       <router-link v-bind:to="{ name: 'list' }" v-if="checkRole">List View</router-link>

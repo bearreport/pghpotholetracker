@@ -1,7 +1,7 @@
 <template>
     <div>
         <add-pothole />
-        <map-module />
+        <map-module  />
     </div>    
 </template>
 
@@ -12,7 +12,6 @@ import AddPothole from "../components/AddPothole"
 export default {
   components: { AddPothole,
   MapModule },
-   
 
 }
 </script>
