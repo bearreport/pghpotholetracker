@@ -18,6 +18,7 @@
         <li>Notes: </li>
         <textarea class="notes-field" readonly v-model="this.$store.state.currentMarker.notes"></textarea>
       </ul>
+      <router-link v-if="$store.state.token != ''" id="addPothole" v-bind:to="{ name: 'addPothole' }">Report New Pothole</router-link>
     </div>
 </template>
 
@@ -54,6 +55,11 @@ export default {
 }
 .info-text {
   font-weight: normal;
+}
+#addPothole {
+  font-weight: bold;
+  color: white;
+  font-size: 30px;
 }
 
 </style>

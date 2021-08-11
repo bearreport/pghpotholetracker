@@ -5,7 +5,8 @@
   <div id="login" class="text-center">
     <form class="form-signin" @submit.prevent="login">
      <div class="grid-container">
-    <div class="grid-itemA"> <h1>Pothole Tracker</h1> </div>
+       <img img id="ppt-logo2" src="../img/PPT-Logo.png" alt="Pittsburgh Pothole Logo">
+    
     <div class="grid-itemB"><h3>We got what you need so you can speed!</h3></div>
      </div>
       <div
@@ -84,6 +85,13 @@ export default {
 </script>
 
 <style>
+#ppt-logo2{
+  height: 175px;
+}
+
+.grid-itemB{
+  width: 250px;
+}
 #username{
   width: 175px;
 }
@@ -101,6 +109,13 @@ color: mintcream;
 .sign-in-button{
 height: 40px;
 width: 80px;
+border: none;
+background-color: #e7b600;
+border-radius: 5px;
+font-weight: bold;
+}
+#login {
+  width: 400px;
 }
 
 

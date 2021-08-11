@@ -1,14 +1,18 @@
 <template>
   <div id="app">
     <div id="nav">
+      <div id="branding">
       <img id="ppt-logo" src="./img/PPT-Logo-Crop.png" alt="Pittsburgh Pothole Tracker Logo">
       <h3 id="page-title">PITTSBURGH POTHOLE TRACKER</h3>
+      </div>
       <div id="links">
       <router-link v-bind:to="{ name: 'home' }">Home</router-link>
       <span class="pipe">   |   </span>
       <router-link v-bind:to="{ name: 'addPothole' }">Report Pothole</router-link>
       <span class="pipe">   |   </span>
       <router-link v-bind:to="{ name: 'map' }">Map</router-link>
+      <span class="pipe" v-if="$store.state.token != ''">   |   </span>
+      <router-link v-if="$store.state.token != ''" v-bind:to="{ name: 'addPothole' }">Report</router-link>
       <span class="pipe" v-if="$store.state.token != ''">   |   </span>
       <router-link v-bind:to="{ name: 'list' }" v-if="checkRole">List View</router-link>
       <span class="pipe" v-if="checkRole" >   |  </span>
@@ -66,7 +70,7 @@ body {
   font-size: 20px;
   font-weight: bold;
   padding: 0 20px;
-  font-size: 1.2h;
+  font-size: 25px;
 }
 #nav a.router-link-exact-active {
   color: #42b983;
@@ -81,21 +85,76 @@ body {
 #page-title {
   font-weight: bolder;
   font-family: 'Staatliches', sans-serif;
-  font-size: 2vw;
   flex-basis: 100%;
+  white-space: nowrap;
+  padding-left: 20px;
 }
 #role-checker {
   flex-basis: 100%;
+  white-space: nowrap;
 }
 #links {
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+  white-space: nowrap;
   flex-basis: 100%;
 }
 #branding {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-basis: 100%;
 }
 #ppt-logo {
   width: auto;
   height: 50px;
+}
+@media only screen and (max-width: 1456px) {
+  #nav {
+    font-size: 20px;
+    flex-wrap: wrap;
+    height: 200px;
+    align-content: flex-start;
+    margin: auto;
+  }
+  #role-checker {
+    font-size: 20px;
+    padding-top: 10px;
+  }
+  #page-title {
+    font-size: 35px;
+    padding: 0;
+  }
+  #ppt-logo {
+    height: 100px;
+  }
+  #branding {
+    flex-basis:0%;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  #nav {
+    height: 230px;
+    overflow: hidden;
+    padding: 5px 0 0 0;
+  }
+  #links {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    white-space: nowrap;
+    font-size: 4.5vw;
+    flex-wrap: wrap;
+  }
+  #page-title {
+    white-space: normal;
+    margin: 0;
+  }
+  #role-checker {
+    font-size: 4.5vw;
+  }
 }
 </style>
 

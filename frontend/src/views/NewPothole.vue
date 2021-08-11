@@ -1,7 +1,9 @@
 <template>
-    <div>
+    <div class="container">
         <add-pothole />
-        <map-module  />
+        <div class='map-content'>
+          <map-module />
+        </div>
     </div>    
 </template>
 
@@ -12,10 +14,16 @@ import AddPothole from "../components/AddPothole"
 export default {
   components: { AddPothole,
   MapModule },
+  created() {
+    this.$store.state.mapHeight.height = "750px"
+  }
+   
 
 }
 </script>
 
 <style>
-
+#newPotholeContainer {
+  display: flex;
+}
 </style>
