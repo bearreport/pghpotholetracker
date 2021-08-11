@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="addFormContainer">
 <formulate-form>
     <h2>Add A Pothole</h2>
     <fieldset>
@@ -56,19 +56,20 @@
         help="Keep it under 250 characters."
         v-model="pothole.notes"
       ></formulate-input>
-
+      <button class="addButton" @click="submitHandler()"
+      type="submit"
+      label="Submit"
+    >Submit!</button>
     </fieldset>
 
 
   </formulate-form>
-      <button @click="submitHandler()"
-      type="submit"
-      label="Submit"
-    >Submit!</button>
-    <br>
-    <button @click.prevent="getCoords">Add GPS Coordinates of your current position to your submission</button>
-    <button @click.prevent="geocode">Add GPS Coordinates of address to your submission</button>
 
+    <br>
+    <div id="addButtonContainer">
+       <button class="addButton" @click.prevent="getCoords">Add GPS Coordinates of current position</button>
+       <button class="addButton" @click.prevent="geocode">Extract coordinates from address</button>
+    </div>
     </div>
 </template>
 
@@ -138,6 +139,34 @@ export default {
 </script>
 
 <style>
-
+#addButtonContainer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+}
+.addButton {
+  /* height: 40px; */
+  padding: 5px;
+  margin: 5px;
+  width: 50%;
+  border: none;
+  background-color: #e7b600;
+  border-radius: 5px;
+  font-weight: bold;
+  white-space: normal;
+  font-size: 15px;
+}
+#addFormContainer {
+  background-color: #025252;
+  flex-grow: 2;
+  max-width: 350px;
+  border-radius: 15px;
+  color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
+  padding: 0 12px;
+  font-size: 20px;
+}
 </style>
 

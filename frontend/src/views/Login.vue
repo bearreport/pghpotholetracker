@@ -109,6 +109,13 @@ color: mintcream;
 .sign-in-button{
 height: 40px;
 width: 80px;
+border: none;
+background-color: #e7b600;
+border-radius: 5px;
+font-weight: bold;
+}
+#login {
+  width: 400px;
 }
 
 
