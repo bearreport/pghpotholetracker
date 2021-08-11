@@ -7,7 +7,7 @@
         <li>Total Number of Potholes: {{ numberOfPotholes }}</li>
         <li>Potholes of low severity: {{ numberOfPotholesOfLowSeverity }}</li>
         <li>Potholes of medium severity: {{numberOfPotholesOfMediumSeverity}} </li>
-        <li>Potholes of high severity: {{numberOfPotholesofHighSeverity}} </li>
+        <li>Potholes of high severity: {{numberOfPotholesOfHighSeverity}} </li>
         <li> Potholes of extreme severity: {{numberOfPotholesExtremeSeverity}}</li>
       </ul>
       <h2>Neighborhoods with most number of potholes</h2>
@@ -79,7 +79,7 @@ export default {
             }
         })
         arr2.sort((a,b) => parseInt(a.occurrence) - parseInt(b.occurrence))   
-        return arr2[arr2.length -1];
+        return arr2[arr2.length -1]; //returns the last element in the array, which has the most occurences
         }
         },
     
